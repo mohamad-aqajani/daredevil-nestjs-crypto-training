@@ -1,12 +1,25 @@
 import axios from 'axios';
 import * as BitcoreLib from 'bitcore-lib';
 
-export async function sendBitcoin(receiverAddress, amount, sourceAddress, privateKey) {
+/**
+ * Create BTC Transaction & BoardCast in network
+ * @param {string} receiverAddress
+ * @param {string} sourceAddress
+ * @param {string} amount
+ * @param {string} privateKey
+ */
+export async function sendBitcoin(
+  receiverAddress: string,
+  amount: number | string,
+  sourceAddress: string,
+  privateKey: string,
+): Promise<any> {
   const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
-  const satoshiToSend = amount * 100000000;
-//   let fee = 0;
+  const satoshiToSend = +amount * 100000000;
+
   let inputCount = 0;
   let outputCount = 2;
+
   const utxos_data = await axios.get(
     `${process.env.BTC_BLOCK}get_tx_unspent/${network}/${sourceAddress}`,
   );
@@ -26,30 +39,12 @@ export async function sendBitcoin(receiverAddress, amount, sourceAddress, privat
     inputs.push(utxo);
   });
 
-//   const transactionSize = inputCount * 146 + outputCount * 34 + 10 - inputCount;
-  // Check if we have enough funds to cover the transaction and the fees assuming we want to pay 20 satoshis per byte
-
-  //   fee = transactionSize * 20;
-//   if (totalAmountAvailable - satoshiToSend - fee < 0) {
-//     throw new Error('Balance is too low for this transaction');
-//   }
-  //Set transaction input
   transaction.from(inputs);
-
-  // set the receiving address and the amount to send
   transaction.to(receiverAddress, satoshiToSend);
-
-  // Set change address - Address to receive the left over funds after transfer
   transaction.change(sourceAddress);
-
   transaction.feePerKb(10000);
-
-  // Sign transaction with private key
   transaction.sign(privateKey);
-
-  // serialize Transactions
   const serializedTransaction = transaction.serialize();
-  // Send transaction
   const result = await axios({
     method: 'POST',
     url: `${process.env.BTC_BLOCK}send_tx/${network}`,
