@@ -60,7 +60,10 @@ export async function sendEthereumContract(
   web3.eth.accounts.wallet.add(privateKey);
   const amount = web3.utils.toBN(tokenAmount);
   const contract = new web3.eth.Contract(abi, contractAddress);
-  const decimals = await contract.methods.decimals().call;
+  const decimal = await contract.methods.decimals().call(function (error, d) {
+    if (!error) return d;
+  });
+  const decimals = web3.utils.toBN(decimal);
   const value = amount.mul(web3.utils.toBN(10).pow(decimals));
   let data = contract.methods.transfer(toAddress, value).encodeABI();
   const createTransaction = await web3.eth.accounts.signTransaction(
