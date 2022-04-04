@@ -34,7 +34,8 @@ export async function sendEthereum(
   );
 
   const createReceipt = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
-  return createReceipt.transactionHash;
+  if (createReceipt.status) return createReceipt.transactionHash;
+  return '';
 }
 
 /**
@@ -55,7 +56,7 @@ export async function sendEthereumContract(
   contractAddress: string,
   privateKey: string,
   gas: number | string = 100000,
-): Promise<any> {
+): Promise<string> {
   web3.eth.accounts.wallet.add(privateKey);
   const amount = web3.utils.toBN(tokenAmount);
   const contract = new web3.eth.Contract(abi, contractAddress);
@@ -73,5 +74,6 @@ export async function sendEthereumContract(
   );
 
   const createReceipt = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
-  console.log({ createReceipt });
+  if (createReceipt.status) return createReceipt.transactionHash;
+  return '';
 }

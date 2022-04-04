@@ -1,7 +1,7 @@
 import { Controller, Request, Post, UseGuards, Get, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { DogeWallet } from '@shared/contracts/wallets/doge-wallet';
-import { EthWallet } from '@shared/contracts/wallets';
+import { BtcWallet, EthWallet } from '@shared/contracts/wallets';
 import { Public } from '@shared/decorators/public.decorator';
 import { AuthService } from 'auth/auth.service';
 import { JwtAuthGuard } from 'auth/passport/jwt-auth.guard';
@@ -42,7 +42,7 @@ export class UsersController {
   }
   @Get('doge')
   async  doge() {
-    return await EthWallet(
+    return await BtcWallet(
       'paddle minute code kid ahead permit sand guitar pave boy decide zero', 4
     )
   }
