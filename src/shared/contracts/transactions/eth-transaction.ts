@@ -48,7 +48,7 @@ export async function sendEthereum(
  * @param {string} privateKey
  * @param {number | string} gas
  */
-export async function sendEthereumContract(
+export async function sendERC20Contract(
   toAddress: string,
   fromAddress: string,
   tokenAmount: string | number,
