@@ -51,7 +51,8 @@
     "tiny-secp256k1": "^2.2.1",
     "tronweb": "^4.1.0",
     "typeorm": "^0.2.45",
-    "web3": "^1.6.1"
+    "web3": "^1.6.1",
+    "xrpl": "^2.1.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

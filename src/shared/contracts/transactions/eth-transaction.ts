@@ -39,7 +39,7 @@ export async function sendEthereum(
 }
 
 /**
- * Create and boardCast Ethereum transactions with tokens
+ * Create and boardCast ERC20 Token Transaction
  * @param {string} toAddress
  * @param {string} fromAddress
  * @param {string} tokenAmount
@@ -47,6 +47,7 @@ export async function sendEthereum(
  * @param {string} contractAddress
  * @param {string} privateKey
  * @param {number | string} gas
+ * @return {string} transaction hash
  */
 export async function sendERC20Contract(
   toAddress: string,
