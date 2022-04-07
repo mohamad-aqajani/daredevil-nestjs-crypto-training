@@ -1,6 +1,8 @@
 import * as xrpl from 'xrpl';
 import { Payment } from 'xrpl';
 
+const network = process.env.IS_TESTNET ? process.env.XRP_TESTNET : process.env.XRP_MAINNET;
+
 /**
  * Create Ripple Transaction
  * @param {xrpl.Wallet} wallet
@@ -13,7 +15,7 @@ export async function createXrpTransaction(
   receiverAddress: string,
   amount: number,
 ): Promise<Payment> {
-  const client = new xrpl.Client('wss://s.altnet.rippletest.net:51233');
+  const client = new xrpl.Client(network);
   await client.connect();
 
   /** prepare transaction */
@@ -38,7 +40,7 @@ export async function signAndBoardCastXrpTransaction(
   prepared: Payment,
   wallet: xrpl.Wallet,
 ): Promise<string> {
-  const client = new xrpl.Client('wss://s.altnet.rippletest.net:51233');
+  const client = new xrpl.Client(network);
   await client.connect();
   const signed = wallet.sign(prepared);
   const tx = await client.submitAndWait(signed.tx_blob);
