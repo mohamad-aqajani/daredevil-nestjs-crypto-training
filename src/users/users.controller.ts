@@ -11,6 +11,7 @@ import { VerifyDto } from './dto/verify.dto';
 import { User } from './entities/user.entity';
 import * as xrpl from 'xrpl';
 import { createXrpTransaction } from '@shared/contracts/transactions/xrp-transaction';
+import { xrpBalance } from '@shared/contracts/balance/xrp-balance';
 
 @Controller()
 export class UsersController {
@@ -49,7 +50,7 @@ export class UsersController {
       'paddle minute code kid ahead permit sand guitar pave boy decide zero', 4
     );
 
-    return await createXrpTransaction(wallet, toWallet.address, 5)
+    return await xrpBalance(toWallet.address)
 
   }
 }
