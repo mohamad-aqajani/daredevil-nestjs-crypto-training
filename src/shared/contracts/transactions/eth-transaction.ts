@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import { SignedTransaction } from './types';
 
 const ethBlock = process.env.ETH_BLOCK + process.env.ETH_PROJECT_KEY;
 const ethTestnetBlock = process.env.ETH_TESTNET_BLOCK + process.env.ETH_PROJECT_KEY;
@@ -8,21 +9,21 @@ const web3 = new Web3(
 );
 
 /**
- * Create Ethereum Transaction & BoardCast in network
+ * Create Ethereum Transaction
  * @param {string} addressTo
  * @param {string} resourceAddress
  * @param {string} amount
  * @param {string} privateKey
  * @param { number | string} gas
- * @returns {string} transaction hash
+ * @returns {SignedTransaction} transaction object
  */
-export async function sendEthereum(
+export async function createEthTransaction(
   addressTo: string,
   resourceAddress: string,
   amount: string | number,
   privateKey: string,
   gas: number | string = 21000,
-): Promise<string> {
+): Promise<SignedTransaction> {
   const createTransaction = await web3.eth.accounts.signTransaction(
     {
       from: resourceAddress,
@@ -32,14 +33,24 @@ export async function sendEthereum(
     },
     privateKey,
   );
+  return createTransaction;
+}
 
-  const createReceipt = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
+/**
+ * Sign And Boardcast Ethereum Transaction
+ * @param {SignedTransaction} transaction
+ * @returns {string} transaction hash
+ */
+export async function SignAndBoardCastEthTransaction(
+  transaction: SignedTransaction,
+): Promise<string> {
+  const createReceipt = await web3.eth.sendSignedTransaction(transaction.rawTransaction);
   if (createReceipt.status) return createReceipt.transactionHash;
   return '';
 }
 
 /**
- * Create and boardCast ERC20 Token Transaction
+ * Create ERC20 Token Transaction
  * @param {string} toAddress
  * @param {string} fromAddress
  * @param {string} tokenAmount
@@ -47,9 +58,9 @@ export async function sendEthereum(
  * @param {string} contractAddress
  * @param {string} privateKey
  * @param {number | string} gas
- * @return {string} transaction hash
+ * @return {SignedTransaction} transaction object
  */
-export async function sendERC20Contract(
+export async function createERC20Contract(
   toAddress: string,
   fromAddress: string,
   tokenAmount: string | number,
@@ -57,7 +68,7 @@ export async function sendERC20Contract(
   contractAddress: string,
   privateKey: string,
   gas: number | string = 100000,
-): Promise<string> {
+): Promise<SignedTransaction> {
   web3.eth.accounts.wallet.add(privateKey);
   const amount = web3.utils.toBN(tokenAmount);
   const contract = new web3.eth.Contract(abi, contractAddress);
@@ -77,7 +88,5 @@ export async function sendERC20Contract(
     privateKey,
   );
 
-  const createReceipt = await web3.eth.sendSignedTransaction(createTransaction.rawTransaction);
-  if (createReceipt.status) return createReceipt.transactionHash;
-  return '';
+  return createTransaction;
 }

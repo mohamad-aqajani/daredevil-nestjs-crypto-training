@@ -9,6 +9,8 @@ import { LocalAuthGuard } from 'auth/passport/local-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { User } from './entities/user.entity';
+import * as xrpl from 'xrpl';
+import { createXrpTransaction } from '@shared/contracts/transactions/xrp-transaction';
 
 @Controller()
 export class UsersController {
@@ -42,8 +44,12 @@ export class UsersController {
   }
   @Get('doge')
   async  doge() {
-    return await XrpWallet(
+    const wallet = xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
+    const toWallet = await XrpWallet(
       'paddle minute code kid ahead permit sand guitar pave boy decide zero', 4
-    )
+    );
+
+    return await createXrpTransaction(wallet, toWallet.address, 5)
+
   }
 }
