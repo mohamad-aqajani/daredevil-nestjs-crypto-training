@@ -7,13 +7,14 @@ import * as BitcoreLib from 'bitcore-lib';
  * @param {string} sourceAddress
  * @param {string} amount
  * @param {string} privateKey
+ * @returns {string} transaction hash
  */
 export async function sendBitcoin(
   receiverAddress: string,
   amount: number | string,
   sourceAddress: string,
   privateKey: string,
-): Promise<any> {
+): Promise<string> {
   const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
   const satoshiToSend = +amount * 100000000;
 
@@ -53,5 +54,5 @@ export async function sendBitcoin(
     },
   });
   console.log(result.data.data);
-  return result.data.data;
+  return result?.data?.data?.txid;
 }

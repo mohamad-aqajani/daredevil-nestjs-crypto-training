@@ -7,6 +7,7 @@ import * as BitcoreLibDoge from 'bitcore-lib-doge';
  * @param {string} sourceAddress
  * @param {string} amount
  * @param {string} privateKey
+ * @returns {string} transaction hash
  */
 export async function sendDoge(
   receiverAddress: string,
@@ -53,5 +54,5 @@ export async function sendDoge(
     },
   });
   console.log({ result: result.data.data });
-  return result.data.data;
+  return result?.data?.data?.txid;
 }
