@@ -1,22 +1,21 @@
 import * as xrpl from 'xrpl';
 
 /**
- * Create Ripple Transaction
+ * Get XRP network fee
  * @param {xrpl.Wallet} wallet
  * @param {string} receiverAddress
  * @param {number | string} amount
- * @returns {any} transaction object
+ * @returns {any} transaction fee
  */
-export async function xrpTransaction(
+export async function xrpGas(
   wallet: xrpl.Wallet,
   receiverAddress: string,
   amount: number,
-): Promise<string> {
+): Promise<string | number> {
   const network = +process.env.IS_TESTNET === 1 ? process.env.XRP_TESTNET : process.env.XRP_MAINNET;
   const client = new xrpl.Client(network);
   await client.connect();
 
-  /** prepare transaction */
   const prepared = await client.autofill({
     TransactionType: 'Payment',
     Account: wallet.address,
@@ -24,10 +23,6 @@ export async function xrpTransaction(
     Destination: receiverAddress,
   });
 
-  /** sign transaction */
-  const signed = wallet.sign(prepared);
-  const tx = await client.submitAndWait(signed.tx_blob);
-  client.disconnect();
-  if (tx.result.validated) return tx.result.hash;
-  else return '';
+  //@ts-ignore
+  return await +prepared?.Fee;
 }

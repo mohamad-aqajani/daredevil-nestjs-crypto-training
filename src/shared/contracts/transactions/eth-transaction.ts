@@ -90,3 +90,36 @@ export async function createERC20Contract(
 
   return createTransaction;
 }
+
+/**
+ * Send Ethereum Transaction
+ * @param {string} addressTo
+ * @param {string} resourceAddress
+ * @param {string} amount
+ * @param {string} privateKey
+ * @param { number | string} gas
+ * @returns {SignedTransaction} transaction hash
+ */
+export async function sendETH(
+  toAddress: string,
+  fromAddress: string,
+  amount: string | number,
+  abi: any,
+  contractAddress: string,
+  privateKey: string,
+  gas: number | string = 100000,
+): Promise<string> {
+  const transaction = contractAddress
+    ? await createERC20Contract(
+        toAddress,
+        fromAddress,
+        amount,
+        abi,
+        contractAddress,
+        privateKey,
+        gas,
+      )
+    : await createEthTransaction(toAddress, fromAddress, amount, privateKey, gas);
+  if (!transaction) return '';
+  return await SignAndBoardCastEthTransaction(transaction);
+}

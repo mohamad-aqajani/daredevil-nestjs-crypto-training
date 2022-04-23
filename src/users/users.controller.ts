@@ -10,8 +10,11 @@ import { LoginDto } from './dto/login.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { User } from './entities/user.entity';
 import * as xrpl from 'xrpl';
-import { createXrpTransaction } from '@shared/contracts/transactions/xrp-transaction';
 import { xrpBalance } from '@shared/contracts/balance/xrp-balance';
+import { xrpGas } from '@shared/contracts/gas/xrp-gas';
+import { ethGas } from '@shared/contracts/gas/eth-gas';
+import { btcGas } from '@shared/contracts/gas/btc-gas';
+import { dogeBalance } from '@shared/contracts/balance/doge-balance';
 
 @Controller()
 export class UsersController {
@@ -44,13 +47,21 @@ export class UsersController {
     };
   }
   @Get('doge')
+  @Public()
   async  doge() {
     const wallet = xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
     const toWallet = await XrpWallet(
       'paddle minute code kid ahead permit sand guitar pave boy decide zero', 4
     );
+    xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
 
-    return await xrpBalance(toWallet.address)
-
+      // return xrpGas(wallet,toWallet.address, 5)
+      // return await ethGas(
+      //   "0xd3C7B12e92a9305710389F5029C9cA2084db99c6",
+      //   "0xd3C7B12e92a9305710389F5029C9cA2084db99c6"
+      // )
+      // return await btcGas('mx2TngwSiYd4wn7ixvYHMtdngYRvWjw77L')
+      return await DogeWallet('paddle minute code kid ahead permit sand guitar pave boy decide zero', 1);
+      // return await dogeBalance('DKUqsn2uQ8iBamthjG5a41nN37Tnd1RvW2')
   }
 }

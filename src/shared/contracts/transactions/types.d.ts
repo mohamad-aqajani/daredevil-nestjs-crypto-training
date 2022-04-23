@@ -32,3 +32,16 @@ export declare type TransactionInput = {
 
 export declare type TransactionOutput = { txID: string; network: Network };
 export declare type TransactionError = { message: string; network: Network };
+
+export declare type TransactionPreviewInput = {
+  from: string;
+  to: string;
+  amount: number;
+};
+
+export declare type TransactionPreviewOutput = {
+  from: string;
+  to: string;
+  amount: number;
+  fee: number;
+};

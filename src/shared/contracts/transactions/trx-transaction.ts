@@ -94,6 +94,7 @@ export async function createTRC20Contract(
 /**
  * Sign And Boardcast Tron Transaction
  * @param {any} transaction
+ * @param {any} privateKey
  * @returns {string} transaction hash
  */
 export async function signAndBoardCastTrxTransaction(
@@ -108,4 +109,27 @@ export async function signAndBoardCastTrxTransaction(
   if (receipt?.result && receipt?.transaction) {
     return receipt?.transaction?.txID;
   } else return null;
+}
+
+/**
+ * Send TRX Transaction
+ * @param {string} sourceAddress
+ * @param {string} targetAddress
+ * @param {string} amount
+ * @param {string} privateKey
+ * @param {string} contractAddress
+ * @returns {string} transaction hash
+ */
+export async function sendTRX(
+  sourceAddress: string,
+  targetAddress: string,
+  amount: number,
+  privateKey: string,
+  contractAddress?: string,
+): Promise<string> {
+  const transaction = contractAddress
+    ? await createTRC20Contract(targetAddress, amount, contractAddress, privateKey)
+    : await createTrxTransaction(sourceAddress, targetAddress, amount, privateKey);
+  if (!transaction) return null;
+  return await signAndBoardCastTrxTransaction(transaction, privateKey);
 }

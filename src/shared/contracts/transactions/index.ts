@@ -1,4 +1,13 @@
-import { TransactionInput, TransactionOutput } from './types';
+import { TransactionInput, TransactionOutput, TransactionPreviewInput, TransactionPreviewOutput } from './types';
+
+export async function TransactionPreview({}: TransactionPreviewInput): Promise<TransactionPreviewOutput> {
+  return {
+    from: '',
+    to: '',
+    amount: 0,
+    fee: 0,
+  };
+}
 
 // export async function Transaction({
 //   privateKey,
