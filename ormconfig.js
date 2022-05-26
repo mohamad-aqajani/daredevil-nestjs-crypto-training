@@ -1,10 +1,17 @@
 module.exports = {
-    "type": "postgres",
-    "host": process.env.DB_HOST,
-    "port": process.env.DB_PORT,
-    "username": process.env.DB_USER,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_NAME,
-    "entities": ["dist/**/*.entity{.ts,.js}"],
-    "synchronize": true
-}
+  type: 'postgres',
+  host: '127.0.0.1',
+  port: 5432,
+  username: 'mohammad',
+  password: '12345678',
+  database: 'dare_devil_v1',
+  entities: ['dist/**/*-entity{.ts,.js}'],
+  synchronize: true,
+  migrationsTableName: 'migrations',
+  migrationsRun: false,
+  migrations: ['dist/db/migrations/*{.ts,.js}'],
+  cli: {
+    migrationsDir: 'src/db/migrations',
+  },
+  autoLoadEntities: true,
+};

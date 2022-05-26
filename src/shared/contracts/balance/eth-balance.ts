@@ -12,7 +12,7 @@ const web3 = new Web3(
  * @param {string} address
  * @returns {Promise<number>} balance
  */
-export async function ethBalance(address: string): Promise<string | number> {
+export async function ethBalance(address: string): Promise<number> {
   const balance = web3.utils.fromWei(await web3.eth.getBalance(address), 'ether');
   return +balance;
 }
@@ -28,7 +28,8 @@ export async function ethContractBalance(
   address: string,
   contractAddress: string,
   contractAbi: any,
-): Promise<string | number> {
+): Promise<number> {
+  console.log({arguments})
   var contract = new web3.eth.Contract(contractAbi, contractAddress);
   const balance = await contract.methods.balanceOf(address).call();
   const formatted = web3.utils.fromWei(balance);

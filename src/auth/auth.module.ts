@@ -11,11 +11,12 @@ import { User } from 'users/entities/user.entity';
 import { UsersService } from 'users/users.service';
 import { RedisModule } from '@shared/modules/redis/redis.module';
 import { RedisService } from '@shared/modules/redis/redis.service';
+import { Asset } from '@shared/entities/asset-entity';
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Asset]),
     ConfigModule.forRoot({ isGlobal: true }),
     JwtModule.register({
       secret: process.env.TOKEN_SECRET,

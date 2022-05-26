@@ -1,28 +1,35 @@
-import { AssetType } from "enums/assets.enum";
-import { Column, Entity } from "typeorm";
-import { BaseEntity } from "./base-entity.entity";
+import { SymbolWalletType } from '@shared/contracts/wallets';
+import { AssetType } from 'enums/assets.enum';
+import { NetworkType } from 'enums/network.enum';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from './base-entity.entity';
 
 @Entity()
 export class Asset extends BaseEntity {
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    symbol: string;
+  @Column()
+  symbol: SymbolWalletType;
 
-    @Column()
-    decimals: number;
+  @Column()
+  decimals?: number;
 
-    @Column({nullable: true})
-    logo: string;
+  @Column({ nullable: true })
+  logo: string;
 
-    @Column({type: 'enum', enum: AssetType, default: AssetType.COIN})
-    type: AssetType;
+  @Column({ type: 'enum', enum: AssetType, default: AssetType.COIN })
+  type: AssetType;
 
-    @Column({nullable: true})
-    contractAddress: string;
+  @Column({ nullable: true })
+  contractAddress?: string;
 
-    @Column({nullable: true})
-    contractAbi: any;
+  @Column('simple-array', { nullable: true })
+  contractAbi?: object[];
 
+  @Column({ nullable: true, type: 'enum', enum: NetworkType })
+  network?: NetworkType;
+
+  @Column({ nullable: true })
+  contractType?: string;
 }

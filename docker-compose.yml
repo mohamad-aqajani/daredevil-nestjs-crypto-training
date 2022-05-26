@@ -1,0 +1,40 @@
+version: "2"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  postgre:
+    image: postgres:latest
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "dare_devil_v1", "-U", "mohammad" ]
+    restart: always
+    
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USERNAME=root
+      - POSTGRES_PASSWORD=12345678
+      # - POSTGRES_DB=dare_devil_v1
+      - APP_DB_USER=mohammad
+      - APP_DB_PASS=12345678
+      - APP_DB_NAME=dare_devil_v1
+
+    volumes:
+      - database_data:/var/lib/postgresql/data
+      - ./db-init.sh:/docker-entrypoint-initdb.d/db-init.sh
+
+  redis:
+    container_name: 'redis'
+    image: 'redis:6.2'
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - 'redisdata:/data'
+
+volumes:
+  database_data:
+    driver: local
+  redisdata:
