@@ -4,7 +4,7 @@ import { dogeBalance } from '../balance/doge-balance';
 import { ethBalance, ethContractBalance } from '../balance/eth-balance';
 import { trxBalance, trxContractBalance } from '../balance/trx-balance';
 import { xrpBalance } from '../balance/xrp-balance';
-import { SymbolWalletType } from '../wallets';
+import { SymbolWalletType } from '../wallets/types';
 
 /**
  * Get wallets balance
@@ -24,7 +24,6 @@ export async function getWalletBalance(
   network?: NetworkType,
   contractAbi?: any,
 ): Promise<number> {
-  console.log({arguments})
   switch (symbol) {
     case 'BTC':
       return await btcBalance(address);

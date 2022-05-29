@@ -1,9 +1,9 @@
 import TronWeb from 'tronweb';
 
 const HttpProvider = TronWeb.providers.HttpProvider;
-const fullNode = new HttpProvider(process.env.TRX_BLOCK);
-const solidityNode = new HttpProvider(process.env.TRX_SOLIDITY_NODE);
-const eventServer = new HttpProvider(process.env.TRX_SERVER_EVENT);
+const fullNode = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_BLOCK : process.env.TRX_BLOCK);
+const solidityNode = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_SOLIDITY_NODE : process.env.TRX_SOLIDITY_NODE);
+const eventServer = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_SERVER_EVENT : process.env.TRX_SERVER_EVENT);
 
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
 
@@ -14,7 +14,7 @@ const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
  */
 export async function trxBalance(address: string): Promise<number> {
   let account = await tronWeb.trx.getAccount(address);
-  return +account?.balance || null;
+  return +account?.balance || 0;
 }
 
 /**

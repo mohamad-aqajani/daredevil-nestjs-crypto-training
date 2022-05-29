@@ -1,4 +1,4 @@
-import { SymbolWalletType } from '@shared/contracts/wallets';
+import { SymbolWalletType } from '@shared/contracts/wallets/types';
 import { AssetType } from 'enums/assets.enum';
 import { NetworkType } from 'enums/network.enum';
 import { Column, Entity } from 'typeorm';
@@ -24,8 +24,8 @@ export class Asset extends BaseEntity {
   @Column({ nullable: true })
   contractAddress?: string;
 
-  @Column('simple-array', { nullable: true })
-  contractAbi?: object[];
+  @Column({ nullable: true })
+  contractAbi?: string;
 
   @Column({ nullable: true, type: 'enum', enum: NetworkType })
   network?: NetworkType;

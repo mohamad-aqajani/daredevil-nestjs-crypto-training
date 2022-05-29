@@ -6,7 +6,7 @@ const ethBlock = process.env.ETH_BLOCK + process.env.ETH_PROJECT_KEY;
 const ethTestnetBlock = process.env.ETH_TESTNET_BLOCK + process.env.ETH_PROJECT_KEY;
 
 const web3 = new Web3(
-  new Web3.providers.HttpProvider(!process.env.IS_TESTNET ? ethTestnetBlock : ethBlock),
+  new Web3.providers.HttpProvider(process.env.IS_TESTNET ? ethTestnetBlock : ethBlock),
 );
 
 /**
@@ -25,10 +25,12 @@ export async function ethERC20Gas(
   abi: any,
   tokenAmount: any,
 ): Promise<number> {
-  var gasPrice = await web3.eth.getGasPrice();
+  try {
+    var gasPrice = await web3.eth.getGasPrice();
   const amount = web3.utils.toBN(tokenAmount);
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  const contract = new web3.eth.Contract(JSON.parse(abi), contractAddress);
   const decimal = await contract.methods.decimals().call(function (error, d) {
+    console.log({d, error})
     if (!error) return d;
   });
   const decimals = web3.utils.toBN(decimal);
@@ -44,6 +46,10 @@ export async function ethERC20Gas(
   var gasLimit = await web3.eth.estimateGas(transactionObject);
   //@ts-ignore
   return web3.utils.fromWei((+gasPrice * +gasLimit).toString(), 'ether');
+  } catch (error) {
+    console.log({error});
+    throw new Error(error);
+  }
 }
 
 /**
@@ -58,19 +64,22 @@ export async function ethGas(
   targetAddress: string,
   data?: any,
 ): Promise<number> {
-  var gasPrice = await web3.eth.getGasPrice();
+  try {
+    var gasPrice = await web3.eth.getGasPrice();
+    var transactionObject = {
+      from: resourceAddress,
+      to: targetAddress,
+      gasPrice: gasPrice,
+    };
 
-  var transactionObject = {
-    from: resourceAddress,
-    to: targetAddress,
-    gasPrice: gasPrice,
-  };
+    if (data)
+      //@ts-ignore
+      transactionObject.data = data;
 
-  if (data)
+    var gasLimit = await web3.eth.estimateGas(transactionObject);
     //@ts-ignore
-    transactionObject.data = data;
-
-  var gasLimit = await web3.eth.estimateGas(transactionObject);
-  //@ts-ignore
-  return web3.utils.fromWei((+gasPrice * +gasLimit).toString(), 'ether');
+    return web3.utils.fromWei((+gasPrice * +gasLimit).toString(), 'ether');
+  } catch (error) {
+    throw new Error(error);
+  }
 }

@@ -1,14 +1,7 @@
 import { Asset } from '@shared/entities/asset-entity';
 import { NetworkType } from 'enums/network.enum';
 import { WalletInfo } from '.';
-import {
-  BtcWallet,
-  DogeWallet,
-  EthWallet,
-  SymbolWalletType,
-  TrxWallet,
-  XrpWallet,
-} from '../wallets';
+import { BtcWallet, DogeWallet, EthWallet, TrxWallet, XrpWallet } from '../wallets';
 import { getWalletBalance } from './get-balance.util';
 
 /**
@@ -24,12 +17,119 @@ export async function getAllWallets(
   mnemonic?: string = process.env.MNEMONIC,
 ): Promise<WalletInfo[]> {
   const wallets: WalletInfo[] = [];
-  //@ts-ignore
-  for (const asset of assets) {
-    switch (asset?.symbol) {
-      case 'BTC':
-        {
-          const wallet = await BtcWallet(mnemonic, index);
+  await Promise.all(
+    assets.map(async (asset) => {
+      switch (asset?.symbol) {
+        case 'BTC':
+          {
+            const wallet = await BtcWallet(mnemonic, index);
+            const balance = await getWalletBalance(
+              index,
+              asset.symbol,
+              wallet?.address,
+              asset?.contractAddress,
+              asset?.network,
+              asset?.contractAbi,
+            );
+            wallets.push({
+              address: wallet.address,
+              balance,
+              logo: asset.logo,
+              symbol: asset.symbol,
+              name: asset.name,
+            });
+          }
+          break;
+
+        case 'ETH':
+          {
+            const wallet = await EthWallet(mnemonic, index);
+            const balance = await getWalletBalance(
+              index,
+              asset.symbol,
+              wallet?.address,
+              asset?.contractAddress,
+              asset?.network,
+              asset?.contractAbi,
+            );
+            wallets.push({
+              address: wallet.address,
+              balance,
+              logo: asset.logo,
+              symbol: asset.symbol,
+              name: asset.name,
+            });
+          }
+          break;
+
+        case 'TRX':
+          {
+            const wallet = await TrxWallet(mnemonic, index);
+            const balance = await getWalletBalance(
+              index,
+              asset.symbol,
+              wallet?.address,
+              asset?.contractAddress,
+              asset?.network,
+              asset?.contractAbi,
+            );
+            wallets.push({
+              address: wallet.address,
+              balance,
+              logo: asset.logo,
+              symbol: asset.symbol,
+              name: asset.name,
+            });
+          }
+          break;
+
+        case 'XRP':
+          {
+            const wallet = await XrpWallet(index);
+            const balance = await getWalletBalance(
+              index,
+              asset.symbol,
+              wallet?.address,
+              asset?.contractAddress,
+              asset?.network,
+              asset?.contractAbi,
+            );
+            wallets.push({
+              address: wallet.address,
+              balance,
+              logo: asset.logo,
+              symbol: asset.symbol,
+              name: asset.name,
+            });
+          }
+          break;
+
+        case 'DOGE':
+          {
+            const wallet = await DogeWallet(mnemonic, index);
+            const balance = await getWalletBalance(
+              index,
+              asset.symbol,
+              wallet?.address,
+              asset?.contractAddress,
+              asset?.network,
+              asset?.contractAbi,
+            );
+            wallets.push({
+              address: wallet.address,
+              balance,
+              logo: asset.logo,
+              symbol: asset.symbol,
+              name: asset.name,
+            });
+          }
+          break;
+
+        default: {
+          const wallet =
+            asset?.network === NetworkType.ETH
+              ? await EthWallet(mnemonic, index)
+              : await TrxWallet(mnemonic, index);
           const balance = await getWalletBalance(
             index,
             asset.symbol,
@@ -41,101 +141,63 @@ export async function getAllWallets(
           wallets.push({
             address: wallet.address,
             balance,
+            logo: asset.logo,
+            symbol: asset.symbol,
+            name: asset.name,
           });
         }
-        break;
-
-      case 'ETH':
-        {
-          const wallet = await EthWallet(mnemonic, index);
-          const balance = await getWalletBalance(
-            index,
-            asset.symbol,
-            wallet?.address,
-            asset?.contractAddress,
-            asset?.network,
-            asset?.contractAbi,
-          );
-          wallets.push({
-            address: wallet.address,
-            balance,
-          });
-        }
-        break;
-
-      case 'TRX':
-        {
-          const wallet = await TrxWallet(mnemonic, index);
-          const balance = await getWalletBalance(
-            index,
-            asset.symbol,
-            wallet?.address,
-            asset?.contractAddress,
-            asset?.network,
-            asset?.contractAbi,
-          );
-          wallets.push({
-            address: wallet.address,
-            balance,
-          });
-        }
-        break;
-
-      case 'XRP':
-        {
-          const wallet = await XrpWallet(mnemonic, index);
-          const balance = await getWalletBalance(
-            index,
-            asset.symbol,
-            wallet?.classicAddress,
-            asset?.contractAddress,
-            asset?.network,
-            asset?.contractAbi,
-          );
-          wallets.push({
-            address: wallet.address,
-            balance,
-          });
-        }
-        break;
-
-      case 'DOGE':
-        {
-          const wallet = await DogeWallet(mnemonic, index);
-          const balance = await getWalletBalance(
-            index,
-            asset.symbol,
-            wallet?.address,
-            asset?.contractAddress,
-            asset?.network,
-            asset?.contractAbi,
-          );
-          wallets.push({
-            address: wallet.address,
-            balance,
-          });
-        }
-        break;
-
-      default: {
-        const wallet =
-          asset?.network === NetworkType.ETH
-            ? await EthWallet(mnemonic, index)
-            : await TrxWallet(mnemonic, index);
-        const balance = await getWalletBalance(
-          index,
-          asset.symbol,
-          wallet?.address,
-          asset?.contractAddress,
-          asset?.network,
-          asset?.contractAbi,
-        );
-        wallets.push({
-          address: wallet.address,
-          balance,
-        });
       }
+    }),
+  );
+  return wallets;
+}
+
+/**
+ * Get user wallets info
+ * @param {number} index
+ * @param {Asset} asset
+ * @returns {WalletInfo} wallet Info
+ */
+export async function getUserWallet(
+  index: number,
+  asset: Asset,
+  //@ts-ignore
+  mnemonic?: string = process.env.MNEMONIC,
+): Promise<string> {
+  const wallets: WalletInfo[] = [];
+  switch (asset?.symbol) {
+    case 'BTC': {
+      const wallet = await BtcWallet(mnemonic, index);
+      return wallet?.address;
+    }
+
+    case 'ETH': {
+      const wallet = await EthWallet(mnemonic, index);
+      return wallet.address;
+    }
+
+    case 'TRX': {
+      const wallet = await TrxWallet(mnemonic, index);
+      wallet.address;
+    }
+
+    case 'XRP': {
+      const wallet = await XrpWallet(index);
+      return wallet.classicAddress;
+    }
+
+    case 'DOGE': {
+      const wallet = await DogeWallet(mnemonic, index);
+      return wallet.address;
+    }
+
+    default: {
+      const wallet =
+        asset?.network === NetworkType.ETH
+          ? await EthWallet(mnemonic, index)
+          : await TrxWallet(mnemonic, index);
+
+      return wallet.address;
     }
   }
-  return wallets;
 }

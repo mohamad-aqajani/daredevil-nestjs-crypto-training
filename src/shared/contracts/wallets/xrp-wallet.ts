@@ -1,7 +1,13 @@
 import { Wallet } from './types';
 import * as xrpl from 'xrpl';
+import { generateSeed } from 'xrpl-keypairs/dist';
 
-export async function XrpWallet(mnemonic, index): Promise<xrpl.Wallet> {
-  const wallet = xrpl.Wallet.fromMnemonic(mnemonic, { derivationPath: `m/44'/144'/${index}'/0/0` });
+export async function XrpWallet(index): Promise<xrpl.Wallet> {
+  const secretArray: Array<number> = JSON.parse(process.env.XRPL_ENTROPY);
+  const seed = generateSeed({
+    entropy: new Uint8Array([...secretArray, index]),
+    algorithm: 'ed25519',
+  });
+  const wallet = xrpl.Wallet.fromSeed(seed);
   return wallet;
 }

@@ -2120,6 +2120,11 @@ base-x@3.0.9, base-x@^3.0.2, base-x@^3.0.8:
   dependencies:
     safe-buffer "^5.0.1"
 
+base58-encode@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/base58-encode/-/base58-encode-0.2.0.tgz#99cf5bffdfa5fa49ea8d8fd031989d2eacef9dd4"
+  integrity sha512-POFCTkUBsOIpeNKv26L1HY6goMGFQssUQe0O6XZu04J+D3a/UHRSvdx4DXU/2RE1FG6FWStWyQyljZBsFjMHLQ==
+
 base64-js@^1.0.2, base64-js@^1.3.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
@@ -6763,6 +6768,14 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+ripple-address-codec@^4.0.0:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.2.4.tgz#a56c2168c8bb81269ea4d15ed96d6824c5a866f8"
+  integrity sha512-roAOjKz94+FboTItey1XRh5qynwt4xvfBLvbbcx+FiR94Yw2x3LrKLF2GVCMCSAh5I6PkcpADg6AbYsUbGN3nA==
+  dependencies:
+    base-x "3.0.9"
+    create-hash "^1.1.2"
+
 ripple-address-codec@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.2.3.tgz#516675715cd43b71d2fd76c59bd92d0f623c152d"
@@ -8390,6 +8403,17 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
+
+xrpl-keypairs@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/xrpl-keypairs/-/xrpl-keypairs-1.0.3.tgz#13c56c09e712df8ccc764c88079df807b1a81aae"
+  integrity sha512-xBGy3wkTwlgmF5luHjYsJw4EjtML95Pg1JgZTHxHZJ2BlOFelJ852CSDfOU7yF5ljPR1NZUe3Tq/SNAC27KMcw==
+  dependencies:
+    bn.js "^5.1.1"
+    brorand "^1.0.5"
+    elliptic "^6.5.4"
+    hash.js "^1.0.3"
+    ripple-address-codec "^4.0.0"
 
 xrpl@^2.1.1:
   version "2.1.1"

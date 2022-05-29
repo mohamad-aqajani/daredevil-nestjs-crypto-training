@@ -71,7 +71,7 @@ export async function createERC20Contract(
 ): Promise<SignedTransaction> {
   web3.eth.accounts.wallet.add(privateKey);
   const amount = web3.utils.toBN(tokenAmount);
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  const contract = new web3.eth.Contract(JSON.parse(abi), contractAddress);
   const decimal = await contract.methods.decimals().call(function (error, d) {
     if (!error) return d;
   });

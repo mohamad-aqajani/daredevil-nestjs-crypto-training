@@ -50,8 +50,7 @@ export class UsersController {
   @Public()
   async  doge() {
     const wallet = xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
-    const toWallet = await XrpWallet(
-      'paddle minute code kid ahead permit sand guitar pave boy decide zero', 4
+    const toWallet = await XrpWallet(4
     );
     xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
 

@@ -1,4 +1,4 @@
-export const mohiAbi = [
+export const mohiAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -229,4 +229,4 @@ export const mohiAbi = [
     name: 'Approval',
     type: 'event',
   },
-];
+]);

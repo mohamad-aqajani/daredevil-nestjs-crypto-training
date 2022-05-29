@@ -29,8 +29,7 @@ export async function ethContractBalance(
   contractAddress: string,
   contractAbi: any,
 ): Promise<number> {
-  console.log({arguments})
-  var contract = new web3.eth.Contract(contractAbi, contractAddress);
+  var contract = new web3.eth.Contract(JSON.parse(contractAbi), contractAddress);
   const balance = await contract.methods.balanceOf(address).call();
   const formatted = web3.utils.fromWei(balance);
   return +formatted;
