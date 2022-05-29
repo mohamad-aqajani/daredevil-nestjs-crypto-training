@@ -12,22 +12,27 @@ export async function xrpTransaction(
   receiverAddress: string,
   amount: number,
 ): Promise<string> {
-  const network = +process.env.IS_TESTNET === 1 ? process.env.XRP_TESTNET : process.env.XRP_MAINNET;
-  const client = new xrpl.Client(network);
-  await client.connect();
+  try {
+    const network =
+      +process.env.IS_TESTNET === 1 ? process.env.XRP_TESTNET : process.env.XRP_MAINNET;
+    const client = new xrpl.Client(network);
+    await client.connect();
 
-  /** prepare transaction */
-  const prepared = await client.autofill({
-    TransactionType: 'Payment',
-    Account: wallet.address,
-    Amount: xrpl.xrpToDrops(amount.toString()),
-    Destination: receiverAddress,
-  });
+    /** prepare transaction */
+    const prepared = await client.autofill({
+      TransactionType: 'Payment',
+      Account: wallet.address,
+      Amount: xrpl.xrpToDrops(amount.toString()),
+      Destination: receiverAddress,
+    });
 
-  /** sign transaction */
-  const signed = wallet.sign(prepared);
-  const tx = await client.submitAndWait(signed.tx_blob);
-  client.disconnect();
-  if (tx.result.validated) return tx.result.hash;
-  else return '';
+    /** sign transaction */
+    const signed = wallet.sign(prepared);
+    const tx = await client.submitAndWait(signed.tx_blob);
+    client.disconnect();
+    if (tx.result.validated) return tx.result.hash;
+    else return '';
+  } catch (error) {
+    throw new Error(error);
+  }
 }

@@ -101,14 +101,18 @@ export async function signAndBoardCastTrxTransaction(
   transaction: any,
   privateKey: string,
 ): Promise<string> {
-  const signedtxn = await tronWeb.trx.sign(transaction, privateKey);
-  const receipt = await tronWeb.trx.sendRawTransaction(signedtxn);
-  if (receipt?.code === 'BANDWITH_ERROR') {
-    throw new Error('Not enough TRX to pay for the transaction');
+  try {
+    const signedtxn = await tronWeb.trx.sign(transaction, privateKey);
+    const receipt = await tronWeb.trx.sendRawTransaction(signedtxn);
+    if (receipt?.code === 'BANDWITH_ERROR') {
+      throw new Error('Not enough TRX to pay for the transaction');
+    }
+    if (receipt?.result && receipt?.transaction) {
+      return receipt?.transaction?.txID;
+    } else return null;
+  } catch (error) {
+    throw new Error(error);
   }
-  if (receipt?.result && receipt?.transaction) {
-    return receipt?.transaction?.txID;
-  } else return null;
 }
 
 /**

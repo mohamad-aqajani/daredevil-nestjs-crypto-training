@@ -15,6 +15,7 @@ export async function sendBitcoin(
   sourceAddress: string,
   privateKey: string,
 ): Promise<string> {
+ try {
   const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
   const satoshiToSend = +amount * 100000000;
 
@@ -55,4 +56,7 @@ export async function sendBitcoin(
   });
   console.log(result.data.data);
   return result?.data?.data?.txid;
+ } catch (error) {
+   throw new Error(error);
+ }
 }

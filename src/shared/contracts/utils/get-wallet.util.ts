@@ -2,6 +2,7 @@ import { Asset } from '@shared/entities/asset-entity';
 import { NetworkType } from 'enums/network.enum';
 import { WalletInfo } from '.';
 import { BtcWallet, DogeWallet, EthWallet, TrxWallet, XrpWallet } from '../wallets';
+import { Wallet } from '../wallets/types';
 import { getWalletBalance } from './get-balance.util';
 
 /**
@@ -163,17 +164,17 @@ export async function getUserWallet(
   asset: Asset,
   //@ts-ignore
   mnemonic?: string = process.env.MNEMONIC,
-): Promise<string> {
+): Promise<Wallet> {
   const wallets: WalletInfo[] = [];
   switch (asset?.symbol) {
     case 'BTC': {
       const wallet = await BtcWallet(mnemonic, index);
-      return wallet?.address;
+      return wallet;
     }
 
     case 'ETH': {
       const wallet = await EthWallet(mnemonic, index);
-      return wallet.address;
+      return wallet;
     }
 
     case 'TRX': {
@@ -183,12 +184,12 @@ export async function getUserWallet(
 
     case 'XRP': {
       const wallet = await XrpWallet(index);
-      return wallet.classicAddress;
+      return wallet;
     }
 
     case 'DOGE': {
       const wallet = await DogeWallet(mnemonic, index);
-      return wallet.address;
+      return wallet;
     }
 
     default: {
@@ -197,7 +198,7 @@ export async function getUserWallet(
           ? await EthWallet(mnemonic, index)
           : await TrxWallet(mnemonic, index);
 
-      return wallet.address;
+      return wallet;
     }
   }
 }

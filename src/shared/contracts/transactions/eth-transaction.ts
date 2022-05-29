@@ -109,17 +109,21 @@ export async function sendETH(
   privateKey: string,
   gas: number | string = 100000,
 ): Promise<string> {
-  const transaction = contractAddress
-    ? await createERC20Contract(
-        toAddress,
-        fromAddress,
-        amount,
-        abi,
-        contractAddress,
-        privateKey,
-        gas,
-      )
-    : await createEthTransaction(toAddress, fromAddress, amount, privateKey, gas);
-  if (!transaction) return '';
-  return await SignAndBoardCastEthTransaction(transaction);
+  try {
+    const transaction = contractAddress
+      ? await createERC20Contract(
+          toAddress,
+          fromAddress,
+          amount,
+          abi,
+          contractAddress,
+          privateKey,
+          gas,
+        )
+      : await createEthTransaction(toAddress, fromAddress, amount, privateKey, gas);
+    if (!transaction) return '';
+    return await SignAndBoardCastEthTransaction(transaction);
+  } catch (error) {
+    throw new Error(error);
+  }
 }

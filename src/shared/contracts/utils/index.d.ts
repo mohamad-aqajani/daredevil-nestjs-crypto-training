@@ -1,3 +1,4 @@
+import { Asset } from '@shared/entities/asset-entity';
 import { NetworkType } from 'enums/network.enum';
 import { SymbolWalletType } from '../wallets/types';
 
@@ -39,64 +40,13 @@ export declare type GetWalletOutput = {
   wallets: WalletInfo[];
 };
 
-export declare type GetWalletBalanceInput = {
-  index: number;
-  symbol: string;
-  address: string;
-  contractAddress: string;
-  network: string;
-  contractAbi: string;
-};
-
-export declare type GetWalletBalanceOutput = {
-  balance: number;
-};
-
-export declare type GetWalletBalanceBySymbolInput = {
-  symbol: string;
-  address: string;
-  contractAddress: string;
-  network: string;
-  contractAbi: string;
-};
-
-export declare type GetWalletBalanceBySymbolOutput = {
-  balance: number;
-};
-
-export declare type GetWalletBalanceByAddressInput = {
-  address: string;
-  contractAddress: string;
-  network: string;
-  contractAbi: string;
-};
-
-export declare type GetWalletBalanceByAddressOutput = {
-  balance: number;
-};
-
-export declare type GetWalletBalanceByContractInput = {
-  contractAddress: string;
-  network: string;
-  contractAbi: string;
-};
-
-export declare type GetWalletBalanceByContractOutput = {
-  balance: number;
-};
-
-export declare type GetWalletBalanceBySymbolAndAddressInput = {
-  symbol: string;
-  address: string;
-  contractAddress: string;
-  network: string;
-  contractAbi: string;
-};
-
-export declare type GetWalletBalanceBySymbolAndAddressOutput = {
-  balance: number;
-};
-
-export declare type GetWalletBalanceBySymbolAndContractInput = {
-  symbol: string;
+export declare type TransactionInput = {
+  sourceAddress: string;
+  receiverAddress: string;
+  amount: number;
+  privateKey?: string;
+  digits?: number;
+  userId?: number;
+  asset: Asset;
+  gas: number;
 };
