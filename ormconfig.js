@@ -5,7 +5,7 @@ module.exports = {
   username: 'mohammad',
   password: '12345678',
   database: 'dare_devil_v1',
-  entities: ['dist/**/*-entity{.ts,.js}'],
+  entities: ['dist/**/*-entity{.ts,.js}', 'dist/**/*.entity{.ts,.js}'],
   synchronize: true,
   migrationsTableName: 'migrations',
   migrationsRun: false,
@@ -14,4 +14,5 @@ module.exports = {
     migrationsDir: 'src/db/migrations',
   },
   autoLoadEntities: true,
+  cache: false
 };

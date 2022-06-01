@@ -12,7 +12,7 @@ export class TransactionsController {
     return await this.transactionsService.getGasPrice(body, request?.user);
   }
 
-  @Post('transaction')
+  @Post('/')
   async transaction(@Body() body: TransactionRequest, @Req() request): Promise<GasPriceResponse> {
     return await this.transactionsService.transaction(body, request?.user);
   }

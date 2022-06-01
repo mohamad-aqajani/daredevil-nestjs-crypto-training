@@ -16,12 +16,10 @@ import { TransactionsModule } from './transactions/transactions.module';
     UsersModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-     
       useFactory: async () =>
-      Object.assign(await 
-       getConnectionOptions(), {
-        autoLoadEntities: true,
-      }),
+        Object.assign(await getConnectionOptions(), {
+          autoLoadEntities: true,
+        }),
     }),
     WalletsModule,
     TransactionsModule,

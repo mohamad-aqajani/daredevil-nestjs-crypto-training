@@ -15,10 +15,9 @@ export class Transaction extends BaseEntity {
     @Column()
     hash: string;
 
-    @Column()
+    @Column({nullable:true})
     status?: TransactionStatus;
 
     @ManyToOne(type => Asset, asset => asset.transactions, {cascade: true}) 
-    @JoinColumn()
     asset: Asset; 
 }

@@ -2,7 +2,7 @@ import { SymbolWalletType } from '@shared/contracts/wallets/types';
 import { AssetType } from 'enums/assets.enum';
 import { NetworkType } from 'enums/network.enum';
 import { Transaction } from 'transactions/entities/transaction.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from './base-entity.entity';
 
 @Entity()
@@ -34,6 +34,6 @@ export class Asset extends BaseEntity {
   @Column({ nullable: true })
   contractType?: string;
 
-  @OneToMany((type) => Transaction, (transaction) => transaction.asset, { cascade: true })
+  @OneToMany((type) => Transaction, (transaction) => transaction.asset)
   transactions: Transaction[];
 }

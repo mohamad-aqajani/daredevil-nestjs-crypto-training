@@ -7,12 +7,15 @@ import { Asset } from '@shared/entities/asset-entity';
 import { Repository } from 'typeorm';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
 import { TransactionRequest } from './dto/transacction.dto';
+import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectRepository(Asset)
     private readonly assetRepository: Repository<Asset>,
+    @InjectRepository(Transaction)
+    private readonly transactionRepository: Repository<Transaction>,
   ) {}
 
   async getGasPrice(body: GasPriceRequest, user: any): Promise<GasPriceResponse> {
@@ -45,17 +48,33 @@ export class TransactionsService {
 
   async transaction(body: TransactionRequest, user: any): Promise<any> {
     const { receiverAddress, gas, amount, assetId } = body;
-    const asset = await this.assetRepository.findOne({ id: assetId });
-    const wallet = await getUserWallet(user?.id, asset);
-    const TXHash = await transactOnLedger({
-      sourceAddress: wallet?.address,
-      receiverAddress,
-      gas,
-      amount,
-      userId: user?.id,
-      asset,
-    });
+    try {
+      const asset = await this.assetRepository.findOne({ id: assetId });
+      const wallet = await getUserWallet(user?.id, asset);
+      const TXHash = await transactOnLedger({
+        sourceAddress: wallet?.address,
+        receiverAddress,
+        gas,
+        amount,
+        userId: user?.id,
+        asset,
+      });
+      console.log({TXHash})
 
-    // create transaction row
+      /** create transaction row */
+      let transactionData = {
+        receiverAddress,
+        hash: TXHash,
+        sourceAddress: wallet?.address,
+        assetId: asset.id,
+      };
+
+      console.log({transactionData})
+      const transaction = await this.transactionRepository.save(transactionData);
+      return transaction;
+    } catch (error) {
+      console.log({error})
+      throw new InternalServerErrorException({message:error.message});
+    }
   }
 }
