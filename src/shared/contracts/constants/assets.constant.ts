@@ -183,7 +183,7 @@ export const test_assets: Partial<Asset>[] = [
     decimals: 18,
     logo: 'https://www.freeiconspng.com/thumbs/coin-icon/empty-gold-coin-icon-19.jpg',
     type: AssetType.TOKEN,
-    contractAddress: '0x4dCCF227e560687bb504e626C4E071A70c782508',
+    contractAddress: '0xFab46E002BbF0b4509813474841E0716E6730136',
     network: NetworkType.ETH,
     contractAbi: mohiAbi,
     contractType: 'ERC20',
