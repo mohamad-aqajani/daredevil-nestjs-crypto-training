@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { User } from 'users/entities/user.entity';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
-import { TransactionRequest } from './dto/transacction.dto';
+import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
+import { Transaction } from './entities/transaction.entity';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
@@ -13,7 +15,15 @@ export class TransactionsController {
   }
 
   @Post('/')
-  async transaction(@Body() body: TransactionRequest, @Req() request): Promise<GasPriceResponse> {
+  async transaction(
+    @Body() body: TransactionRequest,
+    @Req() request,
+  ): Promise<TransactionResponse> {
     return await this.transactionsService.transaction(body, request?.user);
+  }
+
+  @Get('/')
+  async getUserTransactions(@Req() request): Promise<Array<Partial<Transaction>>> {
+    return await this.transactionsService.getUserTransactions(request?.user);
   }
 }

@@ -5,3 +5,10 @@ export class TransactionRequest {
   gas?: number;
 }
 
+export class TransactionResponse {
+  hash: string;
+  coin: string;
+  amount: number;
+  receiverAddress: string;
+  sourceAddress: string;
+}

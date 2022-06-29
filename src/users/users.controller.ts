@@ -15,6 +15,9 @@ import { xrpGas } from '@shared/contracts/gas/xrp-gas';
 import { ethGas } from '@shared/contracts/gas/eth-gas';
 import { btcGas } from '@shared/contracts/gas/btc-gas';
 import { dogeBalance } from '@shared/contracts/balance/doge-balance';
+import { btcTxHistory, btcTxReceivedHistory, btcTxSpentHistory } from '@shared/contracts/tx-history/btc-history';
+import { dogeTxHistory } from '@shared/contracts/tx-history/doge-history';
+import { ethTxHistoryByBlock } from '@shared/contracts/tx-history/eth-history';
 
 @Controller()
 export class UsersController {
@@ -46,21 +49,10 @@ export class UsersController {
       data: req.user,
     };
   }
-  @Get('doge')
+  @Get('test')
   @Public()
-  async  doge() {
-    const wallet = xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
-    const toWallet = await XrpWallet(4
-    );
-    xrpl.Wallet.fromSecret('ssADEV685jaTGsjTFVJyCojffjBUS');
-
-      // return xrpGas(wallet,toWallet.address, 5)
-      // return await ethGas(
-      //   "0xd3C7B12e92a9305710389F5029C9cA2084db99c6",
-      //   "0xd3C7B12e92a9305710389F5029C9cA2084db99c6"
-      // )
-      // return await btcGas('mx2TngwSiYd4wn7ixvYHMtdngYRvWjw77L')
-      return await DogeWallet('paddle minute code kid ahead permit sand guitar pave boy decide zero', 1);
-      // return await dogeBalance('DKUqsn2uQ8iBamthjG5a41nN37Tnd1RvW2')
+  async  test() {
+    return await ethTxHistoryByBlock('0xd3C7B12e92a9305710389F5029C9cA2084db99c6');
+    
   }
 }

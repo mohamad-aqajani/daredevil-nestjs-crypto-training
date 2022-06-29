@@ -5,8 +5,9 @@ import { getAllWallets, getUserWallet } from '@shared/contracts/utils/get-wallet
 import { transactOnLedger } from '@shared/contracts/utils/transaction.util';
 import { Asset } from '@shared/entities/asset-entity';
 import { Repository } from 'typeorm';
+import { User } from 'users/entities/user.entity';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
-import { TransactionRequest } from './dto/transacction.dto';
+import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
 import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
@@ -46,7 +47,7 @@ export class TransactionsService {
     }
   }
 
-  async transaction(body: TransactionRequest, user: any): Promise<any> {
+  async transaction(body: TransactionRequest, user: any): Promise<TransactionResponse> {
     const { receiverAddress, gas, amount, assetId } = body;
     try {
       const asset = await this.assetRepository.findOne({ id: assetId });
@@ -59,22 +60,36 @@ export class TransactionsService {
         userId: user?.id,
         asset,
       });
-      console.log({TXHash})
+      console.log({ TXHash });
 
       /** create transaction row */
       let transactionData = {
         receiverAddress,
         hash: TXHash,
         sourceAddress: wallet?.address,
-        assetId: asset.id,
+        asset: asset,
+        user: user,
       };
 
-      console.log({transactionData})
+      console.log({ transactionData });
       const transaction = await this.transactionRepository.save(transactionData);
-      return transaction;
+      return {
+        hash: transaction?.hash,
+        coin: asset.name,
+        amount,
+        receiverAddress: transaction?.receiverAddress,
+        sourceAddress: transaction?.sourceAddress,
+      };
     } catch (error) {
-      console.log({error})
-      throw new InternalServerErrorException({message:error.message});
+      console.log({ error });
+      throw new InternalServerErrorException({ message: error.message });
     }
+  }
+
+  async getUserTransactions(user: User): Promise<Array<Partial<Transaction>>> {
+    const transactions = await this.transactionRepository.find({
+      where: { user: user },
+    });
+    return transactions;
   }
 }
