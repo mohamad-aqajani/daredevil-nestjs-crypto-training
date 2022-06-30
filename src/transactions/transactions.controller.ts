@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { User } from 'users/entities/user.entity';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
 import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
+import { TransactionHistoryRequest } from './dto/txHistory.dto';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionsService } from './transactions.service';
 
@@ -22,8 +23,11 @@ export class TransactionsController {
     return await this.transactionsService.transaction(body, request?.user);
   }
 
-  @Get('/')
-  async getUserTransactions(@Req() request): Promise<Array<Partial<Transaction>>> {
-    return await this.transactionsService.getUserTransactions(request?.user);
+  @Get('/history')
+  async getUserTransactions(
+    @Body() body: TransactionHistoryRequest,
+    @Req() request,
+  ): Promise<Array<Partial<Transaction>>> {
+    return await this.transactionsService.getUserTransactions(body, request?.user);
   }
 }

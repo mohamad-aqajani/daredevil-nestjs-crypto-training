@@ -26,6 +26,7 @@ import {
   ethTxHistoryByBlock,
 } from '@shared/contracts/tx-history/eth-history';
 import { trxTokenTxHistoryByBlock, trxTxHistoryByBlock } from '@shared/contracts/tx-history/trx.history';
+import { xrpTxHistoryByBlock } from '@shared/contracts/tx-history/xrp.history';
 
 @Controller()
 export class UsersController {
@@ -60,6 +61,7 @@ export class UsersController {
   @Get('test')
   @Public()
   async test() {
-    return await trxTokenTxHistoryByBlock('TL6p5MSH5p96tqg5No7kq6mhoUE4ug9fyn', 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t');
+    //@ts-ignore
+    return await xrpTxHistoryByBlock({address:'rMSTKocQPRKFF83r1zTnuN9wTGxrLJGg9b'});
   }
 }

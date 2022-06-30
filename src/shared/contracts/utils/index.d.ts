@@ -50,3 +50,9 @@ export declare type TransactionInput = {
   asset: Asset;
   gas: number;
 };
+
+export declare type TransferHistoryInput = {
+  userId: number;
+  asset: Asset;
+  sourceAddress: string;
+};

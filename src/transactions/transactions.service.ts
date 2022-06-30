@@ -3,11 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { getGasPrice } from '@shared/contracts/utils/get-gas-preview.util';
 import { getAllWallets, getUserWallet } from '@shared/contracts/utils/get-wallet.util';
 import { transactOnLedger } from '@shared/contracts/utils/transaction.util';
+import { transferHistory } from '@shared/contracts/utils/tx-history.util';
 import { Asset } from '@shared/entities/asset-entity';
 import { Repository } from 'typeorm';
 import { User } from 'users/entities/user.entity';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
 import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
+import { TransactionHistoryRequest, TransactionHistoryResponse } from './dto/txHistory.dto';
 import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
@@ -86,10 +88,18 @@ export class TransactionsService {
     }
   }
 
-  async getUserTransactions(user: User): Promise<Array<Partial<Transaction>>> {
-    const transactions = await this.transactionRepository.find({
-      where: { user: user },
+  async getUserTransactions(
+    body: TransactionHistoryRequest,
+    user: any,
+  ): Promise<Array<TransactionHistoryResponse>> {
+    const { assetId } = body;
+    const asset = await this.assetRepository.findOne({ id: assetId });
+    const wallet = await getUserWallet(user?.id, asset);
+
+    return await transferHistory({
+      userId: user?.id,
+      asset,
+      sourceAddress: wallet?.address,
     });
-    return transactions;
   }
 }
