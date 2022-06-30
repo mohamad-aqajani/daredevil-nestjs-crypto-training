@@ -4,10 +4,8 @@ import { SymbolWalletType } from '../wallets/types';
 
 export declare type WalletInfo = {
   balance: number;
+  asset: Omit<Asset, 'contractAbi'>
   address: string;
-  logo: string;
-  name: string;
-  symbol: SymbolWalletType;
 };
 
 export declare type GetGasInput = {

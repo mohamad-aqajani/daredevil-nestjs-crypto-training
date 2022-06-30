@@ -25,9 +25,9 @@ export class TransactionsController {
 
   @Get('/history')
   async getUserTransactions(
-    @Body() body: TransactionHistoryRequest,
+    @Query() query: TransactionHistoryRequest,
     @Req() request,
   ): Promise<Array<Partial<Transaction>>> {
-    return await this.transactionsService.getUserTransactions(body, request?.user);
+    return await this.transactionsService.getUserTransactions(query, request?.user);
   }
 }

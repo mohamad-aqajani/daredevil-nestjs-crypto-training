@@ -5,20 +5,6 @@ import axios from 'axios';
 import { TxHistory } from './types';
 config();
 
-const HttpProvider = TronWeb.providers.HttpProvider;
-const fullNode = new HttpProvider(
-  !process.env.IS_TESTNET ? process.env.TRX_TEST_BLOCK : process.env.TRX_BLOCK,
-);
-const solidityNode = new HttpProvider(
-  !process.env.IS_TESTNET ? process.env.TRX_TEST_SOLIDITY_NODE : process.env.TRX_SOLIDITY_NODE,
-);
-const eventServer = new HttpProvider(
-  !process.env.IS_TESTNET ? process.env.TRX_TEST_SERVER_EVENT : process.env.TRX_SERVER_EVENT,
-);
-
-const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
-const tronGrid = new TronGrid(tronWeb);
-
 /**
  * Get TRX Transaction history
  * @param {string} address

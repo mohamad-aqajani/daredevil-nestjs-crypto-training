@@ -35,9 +35,7 @@ export async function getAllWallets(
             wallets.push({
               address: wallet.address,
               balance,
-              logo: asset.logo,
-              symbol: asset.symbol,
-              name: asset.name,
+              asset,
             });
           }
           break;
@@ -56,9 +54,7 @@ export async function getAllWallets(
             wallets.push({
               address: wallet.address,
               balance,
-              logo: asset.logo,
-              symbol: asset.symbol,
-              name: asset.name,
+              asset,
             });
           }
           break;
@@ -77,9 +73,7 @@ export async function getAllWallets(
             wallets.push({
               address: wallet.address,
               balance,
-              logo: asset.logo,
-              symbol: asset.symbol,
-              name: asset.name,
+              asset,
             });
           }
           break;
@@ -98,9 +92,7 @@ export async function getAllWallets(
             wallets.push({
               address: wallet.address,
               balance,
-              logo: asset.logo,
-              symbol: asset.symbol,
-              name: asset.name,
+              asset,
             });
           }
           break;
@@ -119,9 +111,7 @@ export async function getAllWallets(
             wallets.push({
               address: wallet.address,
               balance,
-              logo: asset.logo,
-              symbol: asset.symbol,
-              name: asset.name,
+              asset,
             });
           }
           break;
@@ -142,9 +132,7 @@ export async function getAllWallets(
           wallets.push({
             address: wallet.address,
             balance,
-            logo: asset.logo,
-            symbol: asset.symbol,
-            name: asset.name,
+            asset,
           });
         }
       }
