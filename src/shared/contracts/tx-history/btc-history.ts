@@ -1,6 +1,12 @@
 import axios from 'axios';
 import { TxHistory } from './types';
 
+
+/**
+ * Get BTC Transaction history
+ * @param {string} address
+ * @returns {TxHistory[]} transaction history
+ */
 export async function btcTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
     const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';

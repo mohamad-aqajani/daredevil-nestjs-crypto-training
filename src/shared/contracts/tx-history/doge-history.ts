@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { TxHistory } from './types';
 
+/**
+ * Get DOGE Transaction history
+ * @param {string} address
+ * @returns {TxHistory[]} transaction history
+ */
 export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
     const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';

@@ -12,6 +12,12 @@ const alchemyUrl = process.env.IS_TESTNET
 
 const alchemyWeb3 = createAlchemyWeb3(`${alchemyUrl}${alchemyApiKey}`);
 
+/**
+ * Get ETH Transaction history
+ * @param {string} address
+ * @param {string} fromBlock block number
+ * @returns {TxHistory[]} transaction history
+ */
 export async function ethTxHistoryByBlock(
   address: string,
   fromBlock = '0x0',
@@ -63,6 +69,13 @@ export async function ethTxHistoryByBlock(
   }
 }
 
+/**
+ * Get ETH Token transaction history
+ * @param {string} address
+ * @param {string} contractAddress contract address
+ * @param {string} fromBlock block number
+ * @returns {TxHistory[]} transaction history
+ */
 export async function ethTokenTxHistoryByBlock(
   address: string,
   contractAddress: string,
