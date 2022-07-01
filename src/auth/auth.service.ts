@@ -14,9 +14,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LoginDto } from 'users/dto/login.dto';
 import { RedisService } from '@shared/modules/redis/redis.service';
 import { VerifyDto } from 'users/dto/verify.dto';
-import { VerifyResponseDto } from './dto/verify-response.dto';
-import { LoginResponseDto } from './dto/login-response.dto';
-
+import { LoginResponseDto } from '../users/dto/login-response.dto';
+import { VerifyResponseDto } from 'users/dto/verify-response.dto';
+import { RegisterDto } from 'users/dto/register.dto';
+import { RegisterResponseDto } from 'users/dto/register-response.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -52,7 +53,7 @@ export class AuthService {
     };
   }
 
-  async register(body): Promise<any> {
+  async register(body: RegisterDto): Promise<RegisterResponseDto> {
     if (await this.userRepository.findOne({ where: { mobile: body.mobile } }))
       throw new HttpException('User Already Exists!', HttpStatus.BAD_REQUEST);
     try {
