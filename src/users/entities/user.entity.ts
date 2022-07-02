@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UserStatus } from 'enums/user-status.enum';
 import { Role } from 'enums/roles.enum';
 import { Transaction } from 'transactions/entities/transaction.entity';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User extends BaseEntity {

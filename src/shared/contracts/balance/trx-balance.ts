@@ -28,9 +28,11 @@ export async function trxContractBalance(
   contractAddress: string,
   contractAbi: any,
 ): Promise<number> {
-  const { abi } = await tronWeb.trx.getContract(contractAddress);
-  const contract = tronWeb.contract(abi.entrys, contractAddress);
-  const decimals = await contract.decimals().call();
-  const balance = await contract.methods.balanceOf(address).call();
-  return +(+balance / Math.pow(10, decimals)).toFixed(6);
+  // const { abi } = await tronWeb.trx.getContract(contractAddress);
+  // console.log({abi})
+  // const contract = tronWeb.contract(abi.entrys, contractAddress);
+  // const decimals = await contract.decimals().call();
+  // const balance = await contract.methods.balanceOf(address).call();
+  // return +(+balance / Math.pow(10, decimals)).toFixed(6);
+  return 0;
 }

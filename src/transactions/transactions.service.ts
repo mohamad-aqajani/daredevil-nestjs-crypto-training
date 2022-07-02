@@ -23,7 +23,7 @@ export class TransactionsService {
 
   async getGasPrice(body: GasPriceRequest, user: any): Promise<GasPriceResponse> {
     try {
-      const asset = await this.assetRepository.findOne({ id: body.id });
+      const asset = await this.assetRepository.findOne({ id: body.assetId });
       const wallet = await getUserWallet(user?.id, asset);
       const fee = await getGasPrice({
         symbol: body.coin,

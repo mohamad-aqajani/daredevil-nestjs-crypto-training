@@ -1,4 +1,4 @@
-export const maticAbi = [
+export const maticAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -226,4 +226,4 @@ export const maticAbi = [
     name: 'Approval',
     type: 'event',
   },
-];
+]);

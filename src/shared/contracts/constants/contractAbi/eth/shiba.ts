@@ -1,4 +1,4 @@
-export const shibaAbi = [
+export const shibaAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -159,4 +159,4 @@ export const shibaAbi = [
     name: 'Approval',
     type: 'event',
   },
-];
+]);

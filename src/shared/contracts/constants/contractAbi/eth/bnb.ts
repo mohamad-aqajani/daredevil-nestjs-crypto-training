@@ -1,4 +1,4 @@
-export const bnbAbi = [
+export const bnbAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -180,4 +180,4 @@ export const bnbAbi = [
     name: 'Unfreeze',
     type: 'event',
   },
-];
+]);

@@ -17,4 +17,6 @@ export type SymbolWalletType =
   | 'USDT'
   | 'BNB'
   | 'SHIB'
+  | 'UNI'
+  | 'DAI'
   | 'TRX';

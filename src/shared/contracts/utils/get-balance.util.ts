@@ -37,23 +37,13 @@ export async function getWalletBalance(
       return await xrpBalance(address);
     case 'DOGE':
       return await dogeBalance(address);
-    case 'USDT':
-      return network === NetworkType?.ETH
-        ? await ethContractBalance(address, contractAddress, contractAbi)
-        : await trxContractBalance(address, contractAddress, contractAbi);
-    case 'SHIB':
-      return await ethContractBalance(address, contractAddress, contractAbi);
-    case 'SAND':
-      return await ethContractBalance(address, contractAddress, contractAbi);
-    case 'MHM':
-      return await ethContractBalance(address, contractAddress, contractAbi);
-    case 'MATIC':
-      return await ethContractBalance(address, contractAddress, contractAbi);
-    case 'BNB':
-      return await ethContractBalance(address, contractAddress, contractAbi);
-    case 'JST':
-      return await trxContractBalance(address, contractAddress, contractAbi);
-    default:
-      return 0;
+    default: {
+      switch (network) {
+        case 'ETH':
+          return await ethContractBalance(address, contractAddress, contractAbi);
+        case 'TRX':
+          return await trxContractBalance(address, contractAddress, contractAbi);
+      }
+    }
   }
 }

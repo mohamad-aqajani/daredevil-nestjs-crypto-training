@@ -4,6 +4,8 @@ import { xrpTxHistoryByBlock } from '@shared/contracts/tx-history/xrp.history';
 import { Public } from '@shared/decorators/public.decorator';
 import { AuthService } from 'auth/auth.service';
 import { LoginDec } from './decorators/login.dec';
+import { ProfileDec } from './decorators/profile.dec';
+import { RegisterDec } from './decorators/register.dec';
 import { LoginDto } from './dto/login.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { User } from './entities/user.entity';
@@ -20,7 +22,7 @@ export class UsersController {
     return this.authService.login(body);
   }
 
-  @Public()
+  @RegisterDec()
   @Post('auth/register')
   async register(@Body() body) {
     return this.authService.register(body);
@@ -31,8 +33,7 @@ export class UsersController {
   async verify(@Body() body: VerifyDto) {
     return this.authService.verifyOtp(body);
   }
-
-  // @UseGuards(JwtAuthGuard)
+  @ProfileDec()
   @Get('profile')
   async getProfile(@Request() req): Promise<{ data: User }> {
     return {
@@ -43,6 +44,6 @@ export class UsersController {
   @Public()
   async test() {
     //@ts-ignore
-    return await xrpTxHistoryByBlock({address:'rMSTKocQPRKFF83r1zTnuN9wTGxrLJGg9b'});
+    return await xrpTxHistoryByBlock({ address: 'rMSTKocQPRKFF83r1zTnuN9wTGxrLJGg9b' });
   }
 }

@@ -4,7 +4,7 @@ export class GasPriceRequest {
   coin?: SymbolWalletType;
   amount: number;
   receiverAddress: string;
-  id: number
+  assetId: number
 }
 
 export class GasPriceResponse {
