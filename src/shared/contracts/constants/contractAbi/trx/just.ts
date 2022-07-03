@@ -1,4 +1,4 @@
-export const tetherTrxAbi = [
+export const justAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -408,4 +408,4 @@ export const tetherTrxAbi = [
     name: 'Transfer',
     type: 'event',
   },
-];
+]);

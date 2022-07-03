@@ -1,5 +1,6 @@
 import TronWeb from 'tronweb';
 import BigNumber from 'bignumber.js';
+import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 
 const HttpProvider = TronWeb.providers.HttpProvider;
 const fullNode = new HttpProvider(process.env.TRX_BLOCK);
@@ -22,20 +23,22 @@ export async function createTrxTransaction(
   amount: number,
   privateKey: string,
 ): Promise<any> {
+  console.log({...arguments})
   try {
     tronWeb.setPrivateKey(privateKey);
+    // tronWeb.setAddress(sourceAddress);
     const ballance = await tronWeb.trx.getBalance(sourceAddress);
-    if (!ballance) return null;
+    console.log({ballance})
+    if (+ballance/1000000 < amount ) throw new BadRequestException('Not enough Trx in your account.');
 
     const tradeObject = await tronWeb.transactionBuilder.sendTrx(
       targetAddress,
-      +amount,
+      +amount*1000000,
       sourceAddress,
     );
     return tradeObject;
-  } catch (error) {
-    console.log({ error });
-    throw error;
+  } catch (errorX) {
+    throw new Error(errorX)
   }
 }
 
@@ -104,12 +107,13 @@ export async function signAndBoardCastTrxTransaction(
   try {
     const signedtxn = await tronWeb.trx.sign(transaction, privateKey);
     const receipt = await tronWeb.trx.sendRawTransaction(signedtxn);
-    if (receipt?.code === 'BANDWITH_ERROR') {
-      throw new Error('Not enough TRX to pay for the transaction');
-    }
-    if (receipt?.result && receipt?.transaction) {
+    // if (receipt?.code === 'BANDWITH_ERROR'  || 'CONTRACT_VALIDATE_ERROR') {
+    //   throw new Error('Not enough TRX to pay for the transaction');
+    // }
+    if (receipt?.result && receipt?.transaction?.txID) {
+      console.log({transaction})
       return receipt?.transaction?.txID;
-    } else return null;
+    } else throw new Error('Wrong Request. Please check properties.');
   } catch (error) {
     throw new Error(error);
   }
@@ -134,6 +138,6 @@ export async function sendTRX(
   const transaction = contractAddress
     ? await createTRC20Contract(targetAddress, amount, contractAddress, privateKey)
     : await createTrxTransaction(sourceAddress, targetAddress, amount, privateKey);
-  if (!transaction) return null;
+  if (!transaction) throw new InternalServerErrorException();
   return await signAndBoardCastTrxTransaction(transaction, privateKey);
 }

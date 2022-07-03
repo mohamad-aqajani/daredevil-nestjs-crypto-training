@@ -8,7 +8,7 @@ import * as xrpl from 'xrpl';
 export async function xrpBalance(address: string): Promise<number> {
   try {
     const client = new xrpl.Client(
-      process.env.IS_TESTNET ? process.env.XRP_TESTNET :
+      +process.env.IS_TESTNET ? process.env.XRP_TESTNET :
       process.env.XRP_MAINNET,
     );
     await client.connect();

@@ -9,7 +9,7 @@ import axios from 'axios';
  */
 export async function btcGas(sourceAddress: string): Promise<number> {
   try {
-    const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+    const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
   let inputCount = 0;
   let outputCount = 2;
   const utxos_data = await axios.get(

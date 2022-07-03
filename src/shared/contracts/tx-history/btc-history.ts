@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { TxHistory } from './types';
 
-
 /**
  * Get BTC Transaction history
  * @param {string} address
@@ -9,7 +8,7 @@ import { TxHistory } from './types';
  */
 export async function btcTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+    const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_received/${network}/${address}`);
@@ -18,6 +17,7 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
         const txData = await axios.get(
           `${process.env.BTC_BLOCK}get_tx_inputs/${network}/${tx?.txid}`,
         );
+
         return {
           amount: +tx?.value,
           hash: tx?.txid,
@@ -25,6 +25,12 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
           receiverAddress: address,
           type: 'RECEIVED',
         };
+      }),
+    );
+    await Promise.all(
+      dataSwap.map(async (tx, i) => {
+        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+        dataSwap[i].fee = +txDetails.data?.data?.fee;
       }),
     );
     return dataSwap;
@@ -35,7 +41,7 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
 
 export async function btcTxSpentHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+    const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_spent/${network}/${address}`);
@@ -44,6 +50,7 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
         const txData = await axios.get(
           `${process.env.BTC_BLOCK}get_tx_outputs/${network}/${tx?.txid}`,
         );
+
         return {
           amount: +tx?.value,
           hash: tx?.txid,
@@ -51,6 +58,12 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
           receiverAddress: txData?.data?.data?.outputs[0]?.address,
           type: 'SENT',
         };
+      }),
+    );
+    await Promise.all(
+      dataSwap.map(async (tx, i) => {
+        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+        dataSwap[i].fee = +txDetails.data?.data?.fee;
       }),
     );
     return dataSwap;

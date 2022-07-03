@@ -2,14 +2,14 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
 import { Public } from '@shared/decorators/public.decorator';
 import { BadRequestDto } from '@shared/dto';
-import { RegisterResponseDto } from 'users/dto/register-response.dto';
-import { RegisterDto } from 'users/dto/register.dto';
+import { VerifyResponseDto } from 'users/dto/verify-response.dto';
+import { VerifyDto } from 'users/dto/verify.dto';
 
-export function RegisterDec() {
+export function VerifyDec() {
   return applyDecorators(
-    ApiBody({ type: RegisterDto }),
     Public(),
-    ApiCreatedResponse({ type: RegisterResponseDto, description: 'Successful' }),
+    ApiBody({ type: VerifyDto }),
+    ApiCreatedResponse({ type: VerifyResponseDto, description: 'Successful' }),
     ApiBadRequestResponse({
       type: BadRequestDto,
       description: 'Bad request. Body properties are invalid.',

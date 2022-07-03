@@ -3,10 +3,10 @@ import { TxHistory } from './types';
 import { config } from 'dotenv';
 config();
 
-const alchemyApiKey = process.env.IS_TESTNET
+const alchemyApiKey = +process.env.IS_TESTNET
   ? process.env.ALCHEMY_RINKEBY_API_KEY
   : process.env.ALCHEMY_API_KEY;
-const alchemyUrl = process.env.IS_TESTNET
+const alchemyUrl = +process.env.IS_TESTNET
   ? process.env.ALCHEMY_RINKEBY_URL
   : process.env.ALCHEMY_MAINNET_URL;
 
@@ -27,7 +27,7 @@ export async function ethTxHistoryByBlock(
       fromBlock,
       toAddress: address,
       category: [
-        process.env.IS_TESTNET
+        +process.env.IS_TESTNET
           ? AssetTransfersCategory.SPECIALNFT
           : AssetTransfersCategory.EXTERNAL,
       ],
@@ -36,7 +36,7 @@ export async function ethTxHistoryByBlock(
       fromBlock,
       fromAddress: address,
       category: [
-        process.env.IS_TESTNET
+        +process.env.IS_TESTNET
           ? AssetTransfersCategory.SPECIALNFT
           : AssetTransfersCategory.EXTERNAL,
       ],
@@ -53,6 +53,7 @@ export async function ethTxHistoryByBlock(
     });
 
     const receivedArray: TxHistory[] = received.transfers.map((transfer) => {
+      console.log({ transfer });
       return {
         amount: +transfer?.value?.toFixed(4),
         hash: transfer?.hash,
@@ -62,12 +63,22 @@ export async function ethTxHistoryByBlock(
       };
     });
 
-    return sentArray.concat(receivedArray);
+    const last = sentArray.concat(receivedArray);
+
+    await Promise.all(
+      last.map(async (x, i) => {
+        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
+        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
+      }),
+    );
+    return last;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error);
   }
 }
+// (+tx.gasPrice * tx.gas) / 1000000000000000000
+//const receipt = await alchemyWeb3.eth.getTransaction()
 
 /**
  * Get ETH Token transaction history
@@ -115,7 +126,16 @@ export async function ethTokenTxHistoryByBlock(
       };
     });
 
-    return sentArray.concat(receivedArray);
+    const last = sentArray.concat(receivedArray);
+
+    await Promise.all(
+      last.map(async (x, i) => {
+        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
+        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
+      }),
+    );
+
+    return last;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error);

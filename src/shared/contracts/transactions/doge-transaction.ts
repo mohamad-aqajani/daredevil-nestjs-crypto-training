@@ -16,7 +16,7 @@ export async function sendDoge(
   privateKey: string,
 ): Promise<any> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
 
     let inputCount = 0;
     let outputCount = 2;

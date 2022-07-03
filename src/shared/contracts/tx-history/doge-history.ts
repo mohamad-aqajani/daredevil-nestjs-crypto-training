@@ -8,7 +8,7 @@ import { TxHistory } from './types';
  */
 export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_received/${network}/${address}`);
@@ -26,6 +26,12 @@ export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHi
         };
       }),
     );
+    await Promise.all(
+      dataSwap.map(async (tx, i) => {
+        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+        dataSwap[i].fee = +txDetails.data?.data?.fee;
+      }),
+    );
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -34,7 +40,7 @@ export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHi
 
 export async function dogeTxSpentHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_spent/${network}/${address}`);
@@ -52,6 +58,13 @@ export async function dogeTxSpentHistory(address: string): Promise<Array<TxHisto
         };
       }),
     );
+    await Promise.all(
+      dataSwap.map(async (tx, i) => {
+        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+        dataSwap[i].fee = +txDetails.data?.data?.fee;
+      }),
+    );
+
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -59,5 +72,5 @@ export async function dogeTxSpentHistory(address: string): Promise<Array<TxHisto
 }
 
 export async function dogeTxHistory(address: string) {
-  return [...(await dogeTxReceivedHistory(address)), ...(await dogeTxSpentHistory(address))];
+  return [...(await dogeTxReceivedHistory('D89RmwC4a14ietvuSHpftX7D1s89n4nSjG')), ...(await dogeTxSpentHistory('D89RmwC4a14ietvuSHpftX7D1s89n4nSjG'))];
 }

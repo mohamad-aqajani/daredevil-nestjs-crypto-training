@@ -24,6 +24,7 @@ export async function trxTxHistoryByBlock(address: string): Promise<TxHistory[]>
           sourceAddress: tx?.ownerAddress,
           receiverAddress: tx?.toAddress,
           type: tx?.toAddress === address ? 'RECEIVED' : 'SENT',
+          fee: +tx?.cost?.fee / 1000000,
         };
       });
   } catch (error) {
@@ -55,6 +56,7 @@ export async function trxTokenTxHistoryByBlock(
           sourceAddress: tx?.contractData?.owner_address,
           receiverAddress: tx?.trigger_info?.parameter?._to,
           type: tx?.trigger_info?.parameter?._to === address ? 'RECEIVED' : 'SENT',
+          fee: +tx?.cost?.fee / 1000000,
         };
       });
   } catch (error) {

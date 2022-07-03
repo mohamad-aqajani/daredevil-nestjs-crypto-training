@@ -1,4 +1,4 @@
-export const tetherEthAbi = [
+export const tetherEthAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -387,4 +387,4 @@ export const tetherEthAbi = [
   },
   { anonymous: false, inputs: [], name: 'Pause', type: 'event' },
   { anonymous: false, inputs: [], name: 'Unpause', type: 'event' },
-];
+]);

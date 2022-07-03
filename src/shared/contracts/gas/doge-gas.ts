@@ -7,7 +7,7 @@ import axios from 'axios';
  */
 export async function dogeGas(sourceAddress: string): Promise<number> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
     let inputCount = 0;
     let outputCount = 2;
     const utxos_data = await axios.get(

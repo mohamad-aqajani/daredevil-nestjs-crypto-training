@@ -1,4 +1,4 @@
-export const sandAbi = [
+export const sandAbi = JSON.stringify([
   {
     constant: true,
     inputs: [],
@@ -382,4 +382,4 @@ export const sandAbi = [
     name: 'ExecutionOperator',
     type: 'event',
   },
-];
+]);

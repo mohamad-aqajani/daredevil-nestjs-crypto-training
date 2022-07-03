@@ -4,4 +4,5 @@ export declare type TxHistory = {
   sourceAddress: string;
   receiverAddress: string;
   type: 'SENT' | 'RECEIVED';
+  fee?: any;
 };

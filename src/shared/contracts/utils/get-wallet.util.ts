@@ -167,7 +167,7 @@ export async function getUserWallet(
 
     case 'TRX': {
       const wallet = await TrxWallet(mnemonic, index);
-      wallet.address;
+      return wallet;
     }
 
     case 'XRP': {
