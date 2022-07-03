@@ -53,6 +53,7 @@ export async function ethTxHistoryByBlock(
     });
 
     const receivedArray: TxHistory[] = received.transfers.map((transfer) => {
+      console.log({ transfer });
       return {
         amount: +transfer?.value?.toFixed(4),
         hash: transfer?.hash,
@@ -62,12 +63,22 @@ export async function ethTxHistoryByBlock(
       };
     });
 
-    return sentArray.concat(receivedArray);
+    const last = sentArray.concat(receivedArray);
+
+    await Promise.all(
+      last.map(async (x, i) => {
+        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
+        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
+      }),
+    );
+    return last;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error);
   }
 }
+// (+tx.gasPrice * tx.gas) / 1000000000000000000
+//const receipt = await alchemyWeb3.eth.getTransaction()
 
 /**
  * Get ETH Token transaction history
@@ -115,7 +126,16 @@ export async function ethTokenTxHistoryByBlock(
       };
     });
 
-    return sentArray.concat(receivedArray);
+    const last = sentArray.concat(receivedArray);
+
+    await Promise.all(
+      last.map(async (x, i) => {
+        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
+        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
+      }),
+    );
+
+    return last;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error);

@@ -28,6 +28,7 @@ export async function xrpTxHistoryByBlock(wallet: xrpl.Wallet): Promise<TxHistor
         receiverAddress: tx?.tx?.Destination,
         //@ts-ignore
         type: tx?.tx?.Destination === wallet.address ? 'RECEIVED' : 'SENT',
+        fee: +tx?.tx?.Fee
       };
     });
   } catch (error) {
