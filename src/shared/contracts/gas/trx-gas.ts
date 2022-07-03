@@ -4,5 +4,5 @@
  * @returns {any} transaction fee
  */
 export async function trxGas(isContract?: boolean): Promise<number> {
-  return isContract ? 8 : 2;
+  return isContract ? 10 : 1;
 }

@@ -20,7 +20,7 @@ const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
  */
 export async function trxBalance(address: string): Promise<number> {
   let account = await tronWeb.trx.getAccount(address);
-  return +account?.balance || 0;
+  return +account?.balance/1000000 || 0;
 }
 
 /**
