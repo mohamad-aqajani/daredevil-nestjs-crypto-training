@@ -5,7 +5,7 @@ const ethBlock = process.env.ETH_BLOCK + process.env.ETH_PROJECT_KEY;
 const ethTestnetBlock = process.env.ETH_TESTNET_BLOCK + process.env.ETH_PROJECT_KEY;
 
 const web3 = new Web3(
-  new Web3.providers.HttpProvider(process.env.IS_TESTNET ? ethTestnetBlock : ethBlock),
+  new Web3.providers.HttpProvider (+process.env.IS_TESTNET ? ethTestnetBlock : ethBlock),
 );
 
 /**

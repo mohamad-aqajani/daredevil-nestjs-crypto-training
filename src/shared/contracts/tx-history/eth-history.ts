@@ -3,10 +3,10 @@ import { TxHistory } from './types';
 import { config } from 'dotenv';
 config();
 
-const alchemyApiKey = process.env.IS_TESTNET
+const alchemyApiKey = +process.env.IS_TESTNET
   ? process.env.ALCHEMY_RINKEBY_API_KEY
   : process.env.ALCHEMY_API_KEY;
-const alchemyUrl = process.env.IS_TESTNET
+const alchemyUrl = +process.env.IS_TESTNET
   ? process.env.ALCHEMY_RINKEBY_URL
   : process.env.ALCHEMY_MAINNET_URL;
 
@@ -27,7 +27,7 @@ export async function ethTxHistoryByBlock(
       fromBlock,
       toAddress: address,
       category: [
-        process.env.IS_TESTNET
+        +process.env.IS_TESTNET
           ? AssetTransfersCategory.SPECIALNFT
           : AssetTransfersCategory.EXTERNAL,
       ],
@@ -36,7 +36,7 @@ export async function ethTxHistoryByBlock(
       fromBlock,
       fromAddress: address,
       category: [
-        process.env.IS_TESTNET
+        +process.env.IS_TESTNET
           ? AssetTransfersCategory.SPECIALNFT
           : AssetTransfersCategory.EXTERNAL,
       ],

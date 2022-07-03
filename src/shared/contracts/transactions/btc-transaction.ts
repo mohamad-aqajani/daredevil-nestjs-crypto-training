@@ -16,7 +16,7 @@ export async function sendBitcoin(
   privateKey: string,
 ): Promise<string> {
  try {
-  const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+  const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
   const satoshiToSend = +amount * 100000000;
 
   let inputCount = 0;

@@ -1,9 +1,15 @@
 import TronWeb from 'tronweb';
 
 const HttpProvider = TronWeb.providers.HttpProvider;
-const fullNode = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_BLOCK : process.env.TRX_BLOCK);
-const solidityNode = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_SOLIDITY_NODE : process.env.TRX_SOLIDITY_NODE);
-const eventServer = new HttpProvider(process.env.IS_TESTNET ? process.env.TRX_TEST_SERVER_EVENT : process.env.TRX_SERVER_EVENT);
+const fullNode = new HttpProvider(
+  +process.env.IS_TESTNET ? process.env.TRX_TEST_BLOCK : process.env.TRX_BLOCK,
+);
+const solidityNode = new HttpProvider(
+  +process.env.IS_TESTNET ? process.env.TRX_TEST_SOLIDITY_NODE : process.env.TRX_SOLIDITY_NODE,
+);
+const eventServer = new HttpProvider(
+  +process.env.IS_TESTNET ? process.env.TRX_TEST_SERVER_EVENT : process.env.TRX_SERVER_EVENT,
+);
 
 const tronWeb = new TronWeb(fullNode, solidityNode, eventServer);
 
@@ -28,11 +34,10 @@ export async function trxContractBalance(
   contractAddress: string,
   contractAbi: any,
 ): Promise<number> {
-  // const { abi } = await tronWeb.trx.getContract(contractAddress);
-  // console.log({abi})
-  // const contract = tronWeb.contract(abi.entrys, contractAddress);
-  // const decimals = await contract.decimals().call();
-  // const balance = await contract.methods.balanceOf(address).call();
-  // return +(+balance / Math.pow(10, decimals)).toFixed(6);
-  return 0;
+  tronWeb.setAddress(address);
+  const { abi } = await tronWeb.trx.getContract(contractAddress);
+  const contract = tronWeb.contract(abi.entrys, contractAddress);
+  const decimals = await contract.decimals().call();
+  const balance = await contract.methods.balanceOf(address).call();
+  return +(+balance / Math.pow(10, decimals)).toFixed(6);
 }

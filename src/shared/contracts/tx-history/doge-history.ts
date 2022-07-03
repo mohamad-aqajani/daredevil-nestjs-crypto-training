@@ -8,7 +8,7 @@ import { TxHistory } from './types';
  */
 export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_received/${network}/${address}`);
@@ -34,7 +34,7 @@ export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHi
 
 export async function dogeTxSpentHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+    const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_spent/${network}/${address}`);

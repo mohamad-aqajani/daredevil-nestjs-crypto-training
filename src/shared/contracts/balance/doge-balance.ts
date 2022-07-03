@@ -6,7 +6,7 @@ import axios from 'axios';
  * @returns {number} balance
  */
 export async function dogeBalance(address: string): Promise<number> {
-  const network = process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
+  const network = +process.env.IS_TESTNET ? 'DOGETEST' : 'DOGE';
   try {
     const { data } = await axios.get(
       `${process.env.BTC_BLOCK}get_address_balance/${network}/${address}`,

@@ -9,7 +9,7 @@ import { TxHistory } from './types';
  */
 export async function btcTxReceivedHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+    const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_received/${network}/${address}`);
@@ -35,7 +35,7 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
 
 export async function btcTxSpentHistory(address: string): Promise<Array<TxHistory>> {
   try {
-    const network = process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
+    const network = +process.env.IS_TESTNET ? 'BTCTEST' : 'BTC';
     const {
       data: { data },
     } = await axios.get(`${process.env.BTC_BLOCK}get_tx_spent/${network}/${address}`);
