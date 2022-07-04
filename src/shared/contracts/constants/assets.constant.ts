@@ -19,6 +19,7 @@ export const assets: Partial<Asset>[] = [
     decimals: 8,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1.png',
     type: AssetType.COIN,
+    network: NetworkType.BTC,
   },
   {
     name: 'Ethereum',
@@ -26,6 +27,7 @@ export const assets: Partial<Asset>[] = [
     decimals: 18,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1027.png',
     type: AssetType.COIN,
+    network: NetworkType.ETH,
   },
   // {
   //   name: 'Litecoin',
@@ -47,6 +49,7 @@ export const assets: Partial<Asset>[] = [
     decimals: 8,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/74.png',
     type: AssetType.COIN,
+    network: NetworkType.DOGE,
   },
   {
     name: 'Ripple',
@@ -54,6 +57,7 @@ export const assets: Partial<Asset>[] = [
     decimals: 6,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/52.png',
     type: AssetType.COIN,
+    network: NetworkType.XRP,
   },
   {
     name: 'Tron',
@@ -61,6 +65,7 @@ export const assets: Partial<Asset>[] = [
     decimals: 6,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1958.png',
     type: AssetType.COIN,
+    network: NetworkType.TRX,
   },
   /**Tokens */
   {
@@ -172,6 +177,7 @@ export const test_assets: Partial<Asset>[] = [
     decimals: 8,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1.png',
     type: AssetType.COIN,
+    network: NetworkType.BTC,
   },
   {
     name: 'Ethereum',
@@ -179,21 +185,15 @@ export const test_assets: Partial<Asset>[] = [
     decimals: 18,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1027.png',
     type: AssetType.COIN,
+    network: NetworkType.ETH,
   },
-
-  // {
-  //   name: 'Bitcoin Cash',
-  //   symbol: 'BCH',
-  //   decimals: 8,
-  //   logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1831.png',
-  //   type: AssetType.COIN,
-  // },
   {
     name: 'Dogecoin',
     symbol: 'DOGE',
     decimals: 8,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/74.png',
     type: AssetType.COIN,
+    network: NetworkType.DOGE,
   },
   {
     name: 'MOHI(ERC20)',
@@ -213,5 +213,6 @@ export const test_assets: Partial<Asset>[] = [
     decimals: 6,
     logo: 'https://s2.coinmarketcap.com/static/img/coins/32x32/1958.png',
     type: AssetType.COIN,
+    network: NetworkType.TRX,
   },
 ];

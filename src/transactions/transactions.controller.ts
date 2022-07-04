@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { User } from 'users/entities/user.entity';
 import { FeeDec } from './decorators/fee.dec';
+import { FeeByHashDec } from './decorators/feeByHash.dec';
 import { TransactionDec } from './decorators/transaction.dec';
 import { TransactionHistoryDec } from './decorators/tx-history.dec';
+import { FeeByHashRequest } from './dto/feeByHash.dto';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
 import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
 import { TransactionHistoryRequest } from './dto/txHistory.dto';
@@ -14,7 +16,7 @@ export class TransactionsController {
   constructor(private transactionsService: TransactionsService) {}
 
   @FeeDec()
-  @Get('fee')
+  @Get('estimate-fee')
   async getGasPrice(@Query() body: GasPriceRequest, @Req() request): Promise<GasPriceResponse> {
     return await this.transactionsService.getGasPrice(body, request?.user);
   }
@@ -35,5 +37,11 @@ export class TransactionsController {
     @Req() request,
   ): Promise<Array<Partial<Transaction>>> {
     return await this.transactionsService.getUserTransactions(query, request?.user);
+  }
+
+  @FeeByHashDec()
+  @Get('/history/fee')
+  async getFeeByHash(@Query() query: FeeByHashRequest): Promise<number> {
+    return await this.transactionsService.getFeeByHash(query);
   }
 }

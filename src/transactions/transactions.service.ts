@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getFeeHistory } from '@shared/contracts/utils/get-feeHistory.util';
 import { getGasPrice } from '@shared/contracts/utils/get-gas-preview.util';
 import { getAllWallets, getUserWallet } from '@shared/contracts/utils/get-wallet.util';
 import { transactOnLedger } from '@shared/contracts/utils/transaction.util';
@@ -101,5 +102,10 @@ export class TransactionsService {
       asset,
       sourceAddress: wallet?.address,
     });
+  }
+
+  async getFeeByHash(query: { hash: string; assetId: number }): Promise<number> {
+    const asset = await this.assetRepository.findOne({ id: query?.assetId });
+    return await getFeeHistory(query?.hash, asset.network);
   }
 }

@@ -1,7 +1,7 @@
 import * as xrpl from 'xrpl';
 
 /**
- * Get XRP network fee
+ * Estimate XRP network fee
  * @param {xrpl.Wallet} wallet
  * @param {string} receiverAddress
  * @param {number | string} amount

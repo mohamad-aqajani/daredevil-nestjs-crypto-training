@@ -10,7 +10,7 @@ const web3 = new Web3(
 );
 
 /**
- * Get ERC20 network fee
+ * Estimate ERC20 network fee
  * @param {string} resourceAddress
  * @param {string} targetAddress
  * @param {string} contractAddress
@@ -53,7 +53,7 @@ export async function ethERC20Gas(
 }
 
 /**
- * Get ETH network fee
+ * Estimate ETH network fee
  * @param {string} resourceAddress
  * @param {string} targetAddress
  * @param {any} data

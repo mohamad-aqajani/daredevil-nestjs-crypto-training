@@ -1,6 +1,6 @@
 import { NetworkType } from 'enums/network.enum';
 import { GetGasInput } from '.';
-import { btcGas, dogeGas, ethERC20Gas, ethGas, trxGas, xrpGas } from '../gas';
+import { btcGas, dogeGas, ethERC20Gas, ethGas, trxGas, xrpGas } from '../estimate-gas';
 import { XrpWallet } from '../wallets';
 import { SymbolWalletType } from '../wallets/types';
 

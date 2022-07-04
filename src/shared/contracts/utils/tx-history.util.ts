@@ -1,10 +1,14 @@
 import { TransferHistoryInput } from '.';
-import { btcTxHistory } from '../tx-history/btc-history';
-import { dogeTxHistory } from '../tx-history/doge-history';
-import { ethTokenTxHistoryByBlock, ethTxHistoryByBlock } from '../tx-history/eth-history';
-import { trxTokenTxHistoryByBlock, trxTxHistoryByBlock } from '../tx-history/trx.history';
+import {
+  btcTxHistory,
+  dogeTxHistory,
+  ethTokenTxHistoryByBlock,
+  ethTxHistoryByBlock,
+  trxTokenTxHistoryByBlock,
+  trxTxHistoryByBlock,
+  xrpTxHistoryByBlock,
+} from '../tx-history';
 import { TxHistory } from '../tx-history/types';
-import { xrpTxHistoryByBlock } from '../tx-history/xrp.history';
 import { XrpWallet } from '../wallets';
 import { getUserWallet } from './get-wallet.util';
 

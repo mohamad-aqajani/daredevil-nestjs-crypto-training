@@ -43,7 +43,6 @@ export class UsersController {
   @Get('test')
   @Public()
   async test() {
-    //@ts-ignore
-    return await xrpTxHistoryByBlock({ address: 'rMSTKocQPRKFF83r1zTnuN9wTGxrLJGg9b' });
+    // return await ethTxReceipt('0x0512f8a90147024c6d432161fa14524ef2d739bb05f353a42a7a4a666d9c6ffd');
   }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * Get DOGE network fee
+ * Estimate DOGE network fee
  * @param {string} sourceAddress
  * @returns {string} transaction fee
  */

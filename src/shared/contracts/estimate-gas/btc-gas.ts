@@ -3,7 +3,7 @@ import { HttpService} from'@nestjs/axios';
 import axios from 'axios';
 
 /**
- * Get BTC network fee
+ * Estimate BTC network fee
  * @param {string} sourceAddress
  * @returns {string} transaction fee
  */

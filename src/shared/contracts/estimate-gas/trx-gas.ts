@@ -1,5 +1,5 @@
 /**
- * Get XRP network fee
+ * Estimate XRP network fee
  * @param {boolean} isContract
  * @returns {any} transaction fee
  */
