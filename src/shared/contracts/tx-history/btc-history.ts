@@ -24,15 +24,17 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
           sourceAddress: txData?.data?.data?.inputs[0]?.address,
           receiverAddress: address,
           type: 'RECEIVED',
+          date: tx?.time,
+          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
         };
       }),
     );
-    await Promise.all(
-      dataSwap.map(async (tx, i) => {
-        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
-        dataSwap[i].fee = +txDetails.data?.data?.fee;
-      }),
-    );
+    // await Promise.all(
+    //   dataSwap.map(async (tx, i) => {
+    //     const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+    //     dataSwap[i].fee = +txDetails.data?.data?.fee;
+    //   }),
+    // );
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -57,15 +59,17 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
           sourceAddress: address,
           receiverAddress: txData?.data?.data?.outputs[0]?.address,
           type: 'SENT',
+          date: tx?.time,
+          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
         };
       }),
     );
-    await Promise.all(
-      dataSwap.map(async (tx, i) => {
-        const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
-        dataSwap[i].fee = +txDetails.data?.data?.fee;
-      }),
-    );
+    // await Promise.all(
+    //   dataSwap.map(async (tx, i) => {
+    //     const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
+    //     dataSwap[i].fee = +txDetails.data?.data?.fee;
+    //   }),
+    // );
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -73,5 +77,8 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
 }
 
 export async function btcTxHistory(address: string): Promise<Array<TxHistory>> {
-  return [...(await btcTxReceivedHistory(address)), ...(await btcTxSpentHistory(address))];
+  return [
+    ...(await btcTxReceivedHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
+    ...(await btcTxSpentHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
+  ];
 }

@@ -1,7 +1,14 @@
 import { AssetTransfersCategory, createAlchemyWeb3 } from '@alch/alchemy-web3';
 import { TxHistory } from './types';
+import Web3 from 'web3';
 import { config } from 'dotenv';
 config();
+const ethBlock = process.env.ETH_BLOCK + process.env.ETH_PROJECT_KEY;
+const ethTestnetBlock = process.env.ETH_TESTNET_BLOCK + process.env.ETH_PROJECT_KEY;
+
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(+process.env.IS_TESTNET ? ethTestnetBlock : ethBlock),
+);
 
 const alchemyApiKey = +process.env.IS_TESTNET
   ? process.env.ALCHEMY_RINKEBY_API_KEY
@@ -67,8 +74,8 @@ export async function ethTxHistoryByBlock(
 
     await Promise.all(
       last.map(async (x, i) => {
-        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
-        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
+        const details = await web3.eth.getTransaction(x.hash);
+        last[i].fee = (+details.gasPrice * details.gas) / 1000000000000000000;
       }),
     );
     return last;
@@ -77,8 +84,6 @@ export async function ethTxHistoryByBlock(
     throw new Error(error);
   }
 }
-// (+tx.gasPrice * tx.gas) / 1000000000000000000
-//const receipt = await alchemyWeb3.eth.getTransaction()
 
 /**
  * Get ETH Token transaction history
@@ -128,12 +133,12 @@ export async function ethTokenTxHistoryByBlock(
 
     const last = sentArray.concat(receivedArray);
 
-    await Promise.all(
-      last.map(async (x, i) => {
-        const receipt = await alchemyWeb3.eth.getTransaction(x.hash);
-        last[i].fee = (+receipt.gasPrice * receipt.gas) / 1000000000000000000;
-      }),
-    );
+    // await Promise.all(
+    //   last.map(async (x, i) => {
+    //     const details = await alchemyWeb3.eth.getTransaction(x.hash);
+    //     last[i].fee = (+details.gasPrice * details.gas) / 1000000000000000000;
+    //   }),
+    // );
 
     return last;
   } catch (error) {

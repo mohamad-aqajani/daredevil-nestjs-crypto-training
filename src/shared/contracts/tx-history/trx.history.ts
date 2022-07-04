@@ -25,6 +25,8 @@ export async function trxTxHistoryByBlock(address: string): Promise<TxHistory[]>
           receiverAddress: tx?.toAddress,
           type: tx?.toAddress === address ? 'RECEIVED' : 'SENT',
           fee: +tx?.cost?.fee / 1000000,
+          date: tx?.timestamp,
+          status: tx?.confirmed ? 'Confirmed' : !tx.confirmed && !tx.revert ? 'Pending' : 'Failed',
         };
       });
   } catch (error) {

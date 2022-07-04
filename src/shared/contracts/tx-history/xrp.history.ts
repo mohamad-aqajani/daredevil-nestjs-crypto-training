@@ -15,20 +15,24 @@ export async function xrpTxHistoryByBlock(wallet: xrpl.Wallet): Promise<TxHistor
       command: 'account_tx',
       account: wallet.address,
     });
-
+    console.log(data?.result?.transactions);
     return data?.result?.transactions.map((tx) => {
       return {
         //@ts-ignore
         hash: tx?.tx?.hash,
         //@ts-ignore
-        amount: tx?.tx?.Amount / 1000,
+        amount: tx?.tx?.Amount / 1000000,
         //@ts-ignore
         sourceAddress: tx?.tx?.Account,
         //@ts-ignore
         receiverAddress: tx?.tx?.Destination,
         //@ts-ignore
         type: tx?.tx?.Destination === wallet.address ? 'RECEIVED' : 'SENT',
-        fee: +tx?.tx?.Fee
+        fee: +tx?.tx?.Fee,
+        //@ts-ignore
+        date: tx?.tx?.date,
+        //@ts-ignore
+        status: tx?.meta?.TransactionResult?.includes('SUCCESS') ? 'Confirmed' : 'Failed',
       };
     });
   } catch (error) {

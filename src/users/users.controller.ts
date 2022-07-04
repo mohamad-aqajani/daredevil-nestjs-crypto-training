@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { dogeTxHistory, ethTxHistoryByBlock } from '@shared/contracts/tx-history';
 import { xrpTxHistoryByBlock } from '@shared/contracts/tx-history/xrp.history';
 import { Public } from '@shared/decorators/public.decorator';
 import { AuthService } from 'auth/auth.service';
+import { Wallet } from 'xrpl';
 import { LoginDec } from './decorators/login.dec';
 import { ProfileDec } from './decorators/profile.dec';
 import { RegisterDec } from './decorators/register.dec';
@@ -43,6 +45,6 @@ export class UsersController {
   @Get('test')
   @Public()
   async test() {
-    // return await ethTxReceipt('0x0512f8a90147024c6d432161fa14524ef2d739bb05f353a42a7a4a666d9c6ffd');
+    return await ethTxHistoryByBlock('0xd3C7B12e92a9305710389F5029C9cA2084db99c6');
   }
 }

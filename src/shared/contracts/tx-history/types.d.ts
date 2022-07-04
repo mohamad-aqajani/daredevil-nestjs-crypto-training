@@ -5,4 +5,6 @@ export declare type TxHistory = {
   receiverAddress: string;
   type: 'SENT' | 'RECEIVED';
   fee?: any;
+  date?: number | string;
+  status?: 'Confirmed' | 'Pending' | 'Failed'
 };
