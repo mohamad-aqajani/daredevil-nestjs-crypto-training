@@ -1,5 +1,3 @@
-import TronWeb from 'tronweb';
-import TronGrid from 'tronGrid';
 import { config } from 'dotenv';
 import axios from 'axios';
 import { TxHistory } from './types';
