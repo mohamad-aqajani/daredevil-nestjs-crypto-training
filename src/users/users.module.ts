@@ -1,11 +1,10 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Asset } from '@shared/entities/asset-entity';
 import { RedisModule } from '@shared/modules/redis/redis.module';
-import { RedisService } from '@shared/modules/redis/redis.service';
 import { AuthService } from 'auth/auth.service';
 import { JwtStrategy } from 'auth/passport/jwt.strategy';
 import { LocalStrategy } from 'auth/passport/local.strategy';
@@ -21,8 +20,8 @@ import { UsersService } from './users.service';
       secret: process.env.TOKEN_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
-    RedisModule.register({host:'localhost', port: 6379}),
-    HttpModule
+    RedisModule.register({ host: process.env.REDIS_ADDRESS, port: 6379 }),
+    HttpModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, LocalStrategy, JwtStrategy, AuthService],

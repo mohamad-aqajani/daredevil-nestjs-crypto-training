@@ -12,7 +12,7 @@ import { WalletsService } from './wallets.service';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forFeature([User, Asset]),
-    RedisModule.register({ host: 'localhost', port: 6379 }),
+    RedisModule.register({ host: process.env.REDIS_ADDRESS, port: 6379 }),
     HttpModule,
   ],
   controllers: [WalletsController],

@@ -1,5 +1,9 @@
 locals {
-  app_env = merge(var.docker_app_env, {})
+  app_env = merge(var.docker_app_env, {
+    "REDIS_ADDRESS" : aws_elasticache_cluster.redis.cache_nodes[0].address,
+    "DB_HOST" : aws_db_instance.db.address
+    "DB_PORT" : aws_db_instance.db.port
+  })
 }
 
 module "app_container_definition" {
