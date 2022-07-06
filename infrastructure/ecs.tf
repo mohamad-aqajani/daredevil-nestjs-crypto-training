@@ -9,7 +9,7 @@ locals {
 module "app_container_definition" {
   source           = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.56.0"
   container_name   = "future-gate-task"
-  container_image  = aws_ecr_repository.future_gate_ecr_repo.repository_url
+  container_image  = "${aws_ecr_repository.future_gate_ecr_repo.repository_url}:${var.image_tag}"
   container_cpu    = 256
   container_memory = 512
   essential        = true

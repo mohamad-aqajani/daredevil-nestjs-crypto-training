@@ -24,9 +24,15 @@ variable "tags" {
   default     = {}
 }
 
+variable "image_tag" {
+  type        = string
+  description = "Docker image tag"
+  default     = "latest"
+}
+
 variable "db_config" {
   type = object({
-    name  = string,
+    name     = string,
     username = string,
     password = string
   })
