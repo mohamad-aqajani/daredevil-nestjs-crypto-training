@@ -12,4 +12,4 @@ FROM node:14-alpine
 WORKDIR /app
 COPY --from=builder /app ./
 EXPOSE 3000
-CMD ["yarn", "start:prod"]
+CMD ["yarn", "typeorm", "migration:run"]
