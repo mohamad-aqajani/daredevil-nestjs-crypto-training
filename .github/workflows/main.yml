@@ -55,7 +55,7 @@ jobs:
       - name: Create var file
         env:
           TF_VARS: ${{ secrets.TF_VARS }}
-        run: echo $TF_VARS > infrastructure/terraform.tfvars
+        run: echo $TF_VARS > infrastructure/terraform.tfvars.json
 
       - name: Terraform init
         env:
