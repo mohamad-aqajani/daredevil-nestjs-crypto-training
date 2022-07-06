@@ -24,6 +24,16 @@ variable "tags" {
   default     = {}
 }
 
+variable "db_config" {
+  type = object({
+    name  = string,
+    username = string,
+    password = string
+  })
+  default     = null
+  description = "Configuration for the database"
+}
+
 variable "docker_app_env" {
   type        = map(string)
   description = "Environment variables for the application container(s)"

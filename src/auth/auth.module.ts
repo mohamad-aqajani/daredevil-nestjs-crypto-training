@@ -10,7 +10,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'users/entities/user.entity';
 import { UsersService } from 'users/users.service';
 import { RedisModule } from '@shared/modules/redis/redis.module';
-import { RedisService } from '@shared/modules/redis/redis.service';
 import { Asset } from '@shared/entities/asset-entity';
 @Module({
   imports: [
@@ -22,7 +21,7 @@ import { Asset } from '@shared/entities/asset-entity';
       secret: process.env.TOKEN_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
-    RedisModule.register({host:'localhost', port: 6379}),
+    RedisModule.register({ host: process.env.REDIS_ADDRESS, port: 6379 }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, UsersService],
   exports: [AuthService],

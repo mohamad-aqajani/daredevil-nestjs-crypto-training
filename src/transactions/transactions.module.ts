@@ -13,7 +13,7 @@ import { TransactionsService } from './transactions.service';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forFeature([User, Asset, Transaction]),
-    RedisModule.register({ host: 'localhost', port: 6379 }),
+    RedisModule.register({ host: process.env.REDIS_ADDRESS, port: 6379 }),
     HttpModule,
   ],
   controllers: [TransactionsController],
