@@ -15,7 +15,7 @@ export declare type GetGasInput = {
   contractAddress?: string;
   network?: NetworkType;
   contractAbi?: string;
-  symbol?: SymbolWalletType;
+  symbol?: SymbolWalletType | string;
   isContract?: boolean;
   userId: number;
 };

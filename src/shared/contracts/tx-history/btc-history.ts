@@ -77,8 +77,8 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
 }
 
 export async function btcTxHistory(address: string): Promise<Array<TxHistory>> {
-  return [
+  return await Promise.all([
     ...(await btcTxReceivedHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
     ...(await btcTxSpentHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
-  ];
+  ]);
 }

@@ -77,7 +77,7 @@ export async function dogeTxSpentHistory(address: string): Promise<Array<TxHisto
 
 export async function dogeTxHistory(address: string) {
   return [
-    ...(await dogeTxReceivedHistory('D89RmwC4a14ietvuSHpftX7D1s89n4nSjG')),
-    ...(await dogeTxSpentHistory('D89RmwC4a14ietvuSHpftX7D1s89n4nSjG')),
+    ...(await dogeTxReceivedHistory(address)),
+    ...(await dogeTxSpentHistory(address)),
   ];
 }
