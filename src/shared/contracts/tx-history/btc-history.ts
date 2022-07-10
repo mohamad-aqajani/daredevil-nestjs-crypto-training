@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { TransactionStatus } from 'enums/transaction-status.enum';
+import { TransactionType } from 'enums/tx-type.enum';
 import { TxHistory } from './types';
 
 /**
@@ -23,18 +25,13 @@ export async function btcTxReceivedHistory(address: string): Promise<Array<TxHis
           hash: tx?.txid,
           sourceAddress: txData?.data?.data?.inputs[0]?.address,
           receiverAddress: address,
-          type: 'RECEIVED',
+          type: TransactionType.RECEIVED,
           date: tx?.time,
-          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
+          status: tx?.confirmations > 0 ? TransactionStatus.CONFIRMED : TransactionStatus.PENDING,
         };
       }),
     );
-    // await Promise.all(
-    //   dataSwap.map(async (tx, i) => {
-    //     const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
-    //     dataSwap[i].fee = +txDetails.data?.data?.fee;
-    //   }),
-    // );
+
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -58,18 +55,13 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
           hash: tx?.txid,
           sourceAddress: address,
           receiverAddress: txData?.data?.data?.outputs[0]?.address,
-          type: 'SENT',
+          type: TransactionType.SENT,
           date: tx?.time,
-          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
+          status: tx?.confirmations > 0 ? TransactionStatus.CONFIRMED : TransactionStatus.PENDING,
         };
       }),
     );
-    // await Promise.all(
-    //   dataSwap.map(async (tx, i) => {
-    //     const txDetails = await axios.get(`${process.env.BTC_BLOCK}tx/${network}/${tx.hash}`);
-    //     dataSwap[i].fee = +txDetails.data?.data?.fee;
-    //   }),
-    // );
+
     return dataSwap;
   } catch (error) {
     throw new Error(error);
@@ -78,7 +70,7 @@ export async function btcTxSpentHistory(address: string): Promise<Array<TxHistor
 
 export async function btcTxHistory(address: string): Promise<Array<TxHistory>> {
   return await Promise.all([
-    ...(await btcTxReceivedHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
-    ...(await btcTxSpentHistory('bc1qh2l22kcgxwc2mdu387dh5xhyvd777edarr9e9y')),
+    ...(await btcTxReceivedHistory(address)),
+    ...(await btcTxSpentHistory(address)),
   ]);
 }

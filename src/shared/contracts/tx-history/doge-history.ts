@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { TransactionStatus } from 'enums/transaction-status.enum';
+import { TransactionType } from 'enums/tx-type.enum';
 import { TxHistory } from './types';
 
 /**
@@ -22,9 +24,9 @@ export async function dogeTxReceivedHistory(address: string): Promise<Array<TxHi
           hash: tx?.txid,
           sourceAddress: txData?.data?.data?.inputs[0]?.address,
           receiverAddress: address,
-          type: 'RECEIVED',
+          type: TransactionType.RECEIVED,
           date: tx?.time,
-          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
+          status: tx?.confirmations > 0 ? TransactionStatus.CONFIRMED : TransactionStatus.PENDING,
         };
       }),
     );
@@ -56,9 +58,9 @@ export async function dogeTxSpentHistory(address: string): Promise<Array<TxHisto
           hash: tx?.txid,
           sourceAddress: address,
           receiverAddress: txData?.data?.data?.outputs[0]?.address,
-          type: 'SENT',
+          type: TransactionType.SENT,
           date: tx?.time,
-          status: tx?.confirmations > 0 ? 'Confirmed' : 'Pending',
+          status: tx?.confirmations > 0 ? TransactionStatus.CONFIRMED : TransactionStatus.PENDING,
         };
       }),
     );

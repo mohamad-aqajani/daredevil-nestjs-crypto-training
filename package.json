@@ -43,6 +43,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "coininfo": "^5.2.1",
+    "ethereum-tx-decoder": "^3.0.0",
     "ethereumjs-wallet": "^1.0.2",
     "ethers": "^5.6.8",
     "ioredis": "^5.0.1",

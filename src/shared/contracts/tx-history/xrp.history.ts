@@ -1,3 +1,5 @@
+import { TransactionStatus } from 'enums/transaction-status.enum';
+import { TransactionType } from 'enums/tx-type.enum';
 import * as xrpl from 'xrpl';
 import { TxHistory } from './types';
 
@@ -14,6 +16,7 @@ export async function xrpTxHistoryByBlock(wallet: xrpl.Wallet): Promise<TxHistor
     const data = await client.request({
       command: 'account_tx',
       account: wallet.address,
+      limit: 15
     });
     console.log(data?.result?.transactions);
     return data?.result?.transactions.map((tx) => {
@@ -27,12 +30,13 @@ export async function xrpTxHistoryByBlock(wallet: xrpl.Wallet): Promise<TxHistor
         //@ts-ignore
         receiverAddress: tx?.tx?.Destination,
         //@ts-ignore
-        type: tx?.tx?.Destination === wallet.address ? 'RECEIVED' : 'SENT',
-        fee: +tx?.tx?.Fee,
+        type: tx?.tx?.Destination === wallet.address ? TransactionType.RECEIVED : TransactionType.SENT,
+        fee: +tx?.tx?.Fee/1000000,
         //@ts-ignore
         date: tx?.tx?.date,
         //@ts-ignore
-        status: tx?.meta?.TransactionResult?.includes('SUCCESS') ? 'Confirmed' : 'Failed',
+        status: tx?.meta?.TransactionResult?.includes('SUCCESS') ? TransactionStatus.CONFIRMED : TransactionStatus.FAILED,
+        ledgerHash: tx?.ledger_index
       };
     });
   } catch (error) {

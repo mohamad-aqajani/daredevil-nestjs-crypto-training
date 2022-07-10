@@ -4,7 +4,7 @@ import { SymbolWalletType } from '../wallets/types';
 
 export declare type WalletInfo = {
   balance: number;
-  asset: Omit<Asset, 'contractAbi'>
+  asset: Omit<Asset, 'contractAbi'>;
   address: string;
 };
 
@@ -53,4 +53,10 @@ export declare type TransferHistoryInput = {
   userId: number;
   asset: Asset;
   sourceAddress: string;
+};
+
+export declare type TxReceiptInput = {
+  hash: string;
+  ledger?: string | number;
+  asset: Asset;
 };

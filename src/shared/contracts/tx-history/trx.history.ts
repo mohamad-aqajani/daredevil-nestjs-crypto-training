@@ -1,6 +1,8 @@
 import { config } from 'dotenv';
 import axios from 'axios';
 import { TxHistory } from './types';
+import { TransactionType } from 'enums/tx-type.enum';
+import { TransactionStatus } from 'enums/transaction-status.enum';
 config();
 
 /**
@@ -11,7 +13,7 @@ config();
 export async function trxTxHistoryByBlock(address: string): Promise<TxHistory[]> {
   try {
     const { data } = await axios.get(
-      `https://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=20&start=0&address=${address}`,
+      `https://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=15&start=0&address=${address}`,
     );
     return data?.data
       .filter((tx) => tx?.contractType === 1)
@@ -21,10 +23,14 @@ export async function trxTxHistoryByBlock(address: string): Promise<TxHistory[]>
           amount: tx?.amount / 1000000,
           sourceAddress: tx?.ownerAddress,
           receiverAddress: tx?.toAddress,
-          type: tx?.toAddress === address ? 'RECEIVED' : 'SENT',
+          type: tx?.toAddress === address ? TransactionType.RECEIVED : TransactionType.SENT,
           fee: +tx?.cost?.fee / 1000000,
           date: tx?.timestamp,
-          status: tx?.confirmed ? 'Confirmed' : !tx.confirmed && !tx.revert ? 'Pending' : 'Failed',
+          status: tx?.confirmed
+            ? TransactionStatus.CONFIRMED
+            : !tx.confirmed && !tx.revert
+            ? TransactionStatus.PENDING
+            : TransactionStatus.FAILED,
         };
       });
   } catch (error) {
@@ -45,7 +51,7 @@ export async function trxTokenTxHistoryByBlock(
 ): Promise<TxHistory[]> {
   try {
     const { data } = await axios.get(
-      `https://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=20&start=0&address=${address}`,
+      `https://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=15&start=0&address=${address}`,
     );
     return data?.data
       .filter((tx) => tx?.contractData?.contract_address === contractAddress)
@@ -55,7 +61,10 @@ export async function trxTokenTxHistoryByBlock(
           amount: tx?.trigger_info?.parameter?._value / 1000000,
           sourceAddress: tx?.contractData?.owner_address,
           receiverAddress: tx?.trigger_info?.parameter?._to,
-          type: tx?.trigger_info?.parameter?._to === address ? 'RECEIVED' : 'SENT',
+          type:
+            tx?.trigger_info?.parameter?._to === address
+              ? TransactionType.RECEIVED
+              : TransactionType.SENT,
           fee: +tx?.cost?.fee / 1000000,
         };
       });

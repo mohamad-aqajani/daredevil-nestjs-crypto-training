@@ -6,7 +6,7 @@ import { GasPriceRequest, GasPriceResponse } from 'transactions/dto/gasPrice.dto
 export function FeeDec() {
   return applyDecorators(
     ApiBearerAuth(),
-    ApiQuery({type: GasPriceRequest}),
+    // ApiQuery({type: GasPriceRequest}),
     ApiOkResponse({ type: GasPriceResponse, description: 'Successful' }),
     ApiBadRequestResponse({
       type: BadRequestDto,

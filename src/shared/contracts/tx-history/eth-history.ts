@@ -2,6 +2,7 @@ import { AssetTransfersCategory, createAlchemyWeb3 } from '@alch/alchemy-web3';
 import { TxHistory } from './types';
 import Web3 from 'web3';
 import { config } from 'dotenv';
+import { TransactionType } from 'enums/tx-type.enum';
 config();
 const ethBlock = process.env.ETH_BLOCK + process.env.ETH_PROJECT_KEY;
 const ethTestnetBlock = process.env.ETH_TESTNET_BLOCK + process.env.ETH_PROJECT_KEY;
@@ -30,24 +31,28 @@ export async function ethTxHistoryByBlock(
   fromBlock = '0x0',
 ): Promise<TxHistory[]> {
   try {
-    const received = await alchemyWeb3.alchemy.getAssetTransfers({
-      fromBlock,
-      toAddress: address,
-      category: [
-        +process.env.IS_TESTNET
-          ? AssetTransfersCategory.SPECIALNFT
-          : AssetTransfersCategory.EXTERNAL,
-      ],
-    });
-    const sent = await alchemyWeb3.alchemy.getAssetTransfers({
-      fromBlock,
-      fromAddress: address,
-      category: [
-        +process.env.IS_TESTNET
-          ? AssetTransfersCategory.SPECIALNFT
-          : AssetTransfersCategory.EXTERNAL,
-      ],
-    });
+    const [received, sent] = await Promise.all([
+      await alchemyWeb3.alchemy.getAssetTransfers({
+        fromBlock,
+        toAddress: address,
+        excludeZeroValue: true,
+        category: [
+          +process.env.IS_TESTNET
+            ? AssetTransfersCategory.SPECIALNFT
+            : AssetTransfersCategory.EXTERNAL,
+        ],
+      }),
+      await alchemyWeb3.alchemy.getAssetTransfers({
+        fromBlock,
+        fromAddress: address,
+        excludeZeroValue: true,
+        category: [
+          +process.env.IS_TESTNET
+            ? AssetTransfersCategory.SPECIALNFT
+            : AssetTransfersCategory.EXTERNAL,
+        ],
+      }),
+    ]);
 
     const sentArray: TxHistory[] = sent.transfers.map((transfer) => {
       return {
@@ -55,10 +60,9 @@ export async function ethTxHistoryByBlock(
         hash: transfer?.hash,
         sourceAddress: transfer.from,
         receiverAddress: transfer.to,
-        type: 'SENT',
+        type: TransactionType.SENT
       };
     });
-
     const receivedArray: TxHistory[] = received.transfers.map((transfer) => {
       console.log({ transfer });
       return {
@@ -66,18 +70,18 @@ export async function ethTxHistoryByBlock(
         hash: transfer?.hash,
         sourceAddress: transfer?.from,
         receiverAddress: transfer?.to,
-        type: 'RECEIVED',
+        type: TransactionType.RECEIVED,
       };
     });
 
     const last = sentArray.concat(receivedArray);
 
-    await Promise.all(
-      last.map(async (x, i) => {
-        const details = await web3.eth.getTransaction(x.hash);
-        last[i].fee = (+details.gasPrice * details.gas) / 1000000000000000000;
-      }),
-    );
+    // await Promise.all(
+    //   last.map(async (x, i) => {
+    //     const details = await web3.eth.getTransaction(x.hash);
+    //     last[i].fee = (+details.gasPrice * details.gas) / 1000000000000000000;
+    //   }),
+    // );
     return last;
   } catch (error) {
     console.log({ error: error.message });
@@ -98,18 +102,22 @@ export async function ethTokenTxHistoryByBlock(
   fromBlock = '0x0',
 ): Promise<TxHistory[]> {
   try {
-    const received = await alchemyWeb3.alchemy.getAssetTransfers({
-      fromBlock,
-      toAddress: address,
-      contractAddresses: [contractAddress],
-      category: [AssetTransfersCategory.TOKEN],
-    });
-    const sent = await alchemyWeb3.alchemy.getAssetTransfers({
-      fromBlock,
-      fromAddress: address,
-      contractAddresses: [contractAddress],
-      category: [AssetTransfersCategory.TOKEN],
-    });
+    const [received, sent] = await Promise.all([
+      await alchemyWeb3.alchemy.getAssetTransfers({
+        fromBlock,
+        toAddress: address,
+        contractAddresses: [contractAddress],
+        category: [AssetTransfersCategory.TOKEN],
+        excludeZeroValue: true
+      }),
+      await alchemyWeb3.alchemy.getAssetTransfers({
+        fromBlock,
+        fromAddress: address,
+        contractAddresses: [contractAddress],
+        category: [AssetTransfersCategory.TOKEN],
+        excludeZeroValue: true
+      }),
+    ]);
 
     const sentArray: TxHistory[] = sent.transfers.map((transfer) => {
       return {
@@ -117,7 +125,7 @@ export async function ethTokenTxHistoryByBlock(
         hash: transfer?.hash,
         sourceAddress: transfer?.from,
         receiverAddress: transfer?.to,
-        type: 'SENT',
+        type:  TransactionType.SENT,
       };
     });
 
@@ -127,7 +135,7 @@ export async function ethTokenTxHistoryByBlock(
         hash: transfer?.hash,
         sourceAddress: transfer?.from,
         receiverAddress: transfer?.to,
-        type: 'RECEIVED',
+        type: TransactionType.RECEIVED,
       };
     });
 

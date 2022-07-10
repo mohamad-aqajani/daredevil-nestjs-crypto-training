@@ -1,16 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TxReceipt } from '@shared/contracts/tx-receipt/types';
 import { getFeeHistory } from '@shared/contracts/utils/get-feeHistory.util';
 import { getGasPrice } from '@shared/contracts/utils/get-gas-preview.util';
+import { getTxReceipt } from '@shared/contracts/utils/get-tx-receipt.util';
 import { getAllWallets, getUserWallet } from '@shared/contracts/utils/get-wallet.util';
 import { transactOnLedger } from '@shared/contracts/utils/transaction.util';
 import { transferHistory } from '@shared/contracts/utils/tx-history.util';
 import { Asset } from '@shared/entities/asset-entity';
+import { number } from 'bitcoinjs-lib/src/script';
 import { Repository } from 'typeorm';
 import { User } from 'users/entities/user.entity';
 import { GasPriceRequest, GasPriceResponse } from './dto/gasPrice.dto';
 import { TransactionRequest, TransactionResponse } from './dto/transacction.dto';
 import { TransactionHistoryRequest, TransactionHistoryResponse } from './dto/txHistory.dto';
+import { TransactionReceiptRequest, TransactionReceiptResponse } from './dto/txReceipt.dto';
 import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
@@ -107,5 +111,12 @@ export class TransactionsService {
   async getFeeByHash(query: { hash: string; assetId: number }): Promise<number> {
     const asset = await this.assetRepository.findOne({ id: query?.assetId });
     return await getFeeHistory(query?.hash, asset.network);
+  }
+
+  async getTransactionReceipt(
+    query: TransactionReceiptRequest,
+  ): Promise<TransactionReceiptResponse> {
+    const asset = await this.assetRepository.findOne({ id: query?.assetId });
+    return await getTxReceipt({ hash: query.hash, ledger: query?.ledger, asset });
   }
 }
