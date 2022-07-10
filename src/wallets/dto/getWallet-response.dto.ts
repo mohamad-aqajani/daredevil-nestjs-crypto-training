@@ -1,5 +1,6 @@
-import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
-import { Asset } from "@shared/entities/asset-entity";
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { PaginationResponseDto } from '@shared/dto';
+import { Asset } from '@shared/entities/asset-entity';
 
 class AssetType {
   @ApiProperty()
@@ -30,4 +31,8 @@ export class WalletInfo {
   balance: number;
   asset: AssetType;
   address: string;
+}
+
+export class GetWalletResponse extends PaginationResponseDto {
+  items: WalletInfo[];
 }

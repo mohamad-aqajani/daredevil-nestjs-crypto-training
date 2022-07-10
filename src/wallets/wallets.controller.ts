@@ -1,6 +1,8 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Query, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { query } from 'express';
 import { GetWalletsDec } from './decorators/getWallets.dec';
+import { GetWalletRequest } from './dto/getWallet-request.dto';
 import { WalletsService } from './wallets.service';
 
 @ApiTags('Wallets')
@@ -10,7 +12,7 @@ export class WalletsController {
 
   @GetWalletsDec()
   @Get('/')
-  async getWallets(@Req() request) {
-    return this.walletsService.getWalletsInfo(request.user);
+  async getWallets(@Query() query: GetWalletRequest, @Req() request) {
+    return this.walletsService.getWalletsInfo(query ,request.user);
   }
 }

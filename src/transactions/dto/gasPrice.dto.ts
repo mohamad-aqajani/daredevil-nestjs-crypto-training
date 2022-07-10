@@ -1,10 +1,17 @@
 import { SymbolWalletType } from '@shared/contracts/wallets/types';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class GasPriceRequest {
-  coin:SymbolWalletType | string;
+  coin: SymbolWalletType | string;
+  @IsNotEmpty()
   amount: number;
+  @IsNotEmpty()
+  @IsString()
   receiverAddress: string;
-  assetId: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  assetId: number;
 }
 
 export class GasPriceResponse {

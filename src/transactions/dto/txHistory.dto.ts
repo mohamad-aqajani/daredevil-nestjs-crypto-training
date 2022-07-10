@@ -1,8 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { TransactionStatus } from "enums/transaction-status.enum";
-import { TransactionType } from "enums/tx-type.enum";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
+import { TransactionStatus } from 'enums/transaction-status.enum';
+import { TransactionType } from 'enums/tx-type.enum';
 
 export class TransactionHistoryRequest {
+  @IsNotEmpty()
   assetId: number;
 }
 
@@ -15,6 +17,6 @@ export class TransactionHistoryResponse {
   type: TransactionType;
   fee?: number;
   date?: number;
-  status?:  TransactionStatus;
+  status?: TransactionStatus;
   ledgerIndex?: string;
 }

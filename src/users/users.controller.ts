@@ -11,6 +11,7 @@ import { LoginDec } from './decorators/login.dec';
 import { ProfileDec } from './decorators/profile.dec';
 import { RegisterDec } from './decorators/register.dec';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { User } from './entities/user.entity';
 
@@ -28,7 +29,7 @@ export class UsersController {
 
   @RegisterDec()
   @Post('auth/register')
-  async register(@Body() body) {
+  async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 

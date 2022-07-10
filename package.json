@@ -48,6 +48,7 @@
     "ethers": "^5.6.8",
     "ioredis": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
+    "nestjs-typeorm-paginate": "^4.0.1",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
